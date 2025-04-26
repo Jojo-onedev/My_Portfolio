@@ -1,0 +1,37 @@
+[
+  {
+    "title": "Shoes Landing Page",
+    "description": "Landing page for a shoe company",
+    "image": "/images/Shoes.png",
+    "link": "https://github.com/Jojo-onedev/ShoeShop-main",
+    "category": "web"
+  },
+  {
+    "title": "Loop Studio Landing Page",
+    "description": "Presentation of a VR studio landing page",
+    "image": "/images/loopstudio.jpeg",
+    "link": "https://github.com/Jojo-onedev/Loopstudio_Landingpage",
+    "category": "dev"
+  },
+  {
+    "title": "Job Application Tracker",
+    "description": "A job application tracker for the job applied management. Features: Add task, Delete task",
+    "image": "/images/jobapp.jpeg",
+    "link": "https://github.com/Jojo-onedev/JOB-APP-TRACKER-PROJECT",
+    "category": "ui"
+  },
+  {
+    "title": "Laravel Library Management System",
+    "description": "A library management system built with Laravel",
+    "image": "/images/biblio.png",
+    "link": "https://github.com/Dayende-ib/gestion-bibliotheque.git",
+    "category": "dev"
+  },
+    {
+      "title": "Portfolio",
+      "description": "My portfolio website",
+      "image": "/images/portfolio.png",
+      "link": "/",
+      "category": "web"
+    }
+]
