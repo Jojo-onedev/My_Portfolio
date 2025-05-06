@@ -78,10 +78,10 @@ const News = () => {
           className="max-w-6xl mx-auto text-center mb-12"
         >
           <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Actualités
+            News
           </h2>
           <p className="text-gray-600 dark:text-gray-300 mb-8">
-            Dernières actualités du développement web
+            Lastest articles from the developer community
           </p>
 
           <div className="flex flex-col md:flex-row items-center gap-4 mb-8">
@@ -98,7 +98,7 @@ const News = () => {
               ) : (
                 <RefreshIcon className="h-5 w-5 mr-2" />
               )}
-              Rafraîchir
+              Refresh
             </button>
 
             <div className="flex flex-wrap gap-2">
@@ -106,7 +106,7 @@ const News = () => {
                 onClick={() => setSelectedCategory('all')}
                 className={`px-4 py-2 rounded-full ${selectedCategory === 'all' ? 'bg-primary text-white' : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300'}`}
               >
-                Tous
+                All
               </button>
               {['javascript', 'typescript', 'python', 'java', 'figma', 'HTML', 'CSS', 'react', 'nodejs', 'webdev'].map((cat) => (
                 <button
