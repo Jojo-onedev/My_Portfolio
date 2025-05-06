@@ -37,7 +37,8 @@ const Footer = () => {
             <div>
               <h3 className="text-2xl font-bold mb-4">Jonathan</h3>
               <p className="text-gray-400 mb-4">
-                Développeur Web passionné et créatif, spécialisé dans la création d'applications web modernes et responsives.
+                I am a passionate web developer with a focus on creating beautiful and functional web applications. My goal is to deliver high-quality solutions that meet the needs of my clients.
+                I am always eager to learn and improve my skills, and I love collaborating with others to bring ideas to life.
               </p>
               <div className="flex space-x-4">
                 {socialLinks.map((link, index) => (
@@ -67,6 +68,7 @@ const Footer = () => {
                 <li><a href="#projects" className="text-gray-400 hover:text-white transition-colors">Projects</a></li>
                 <li><a href="#skills" className="text-gray-400 hover:text-white transition-colors">Skills</a></li>
                 <li><a href="#testimonials" className="text-gray-400 hover:text-white transition-colors">Testimonials</a></li>
+                <li><a href="/newa" className="text-gray-400 hover:text-white transition-colors">News</a></li>
                 <li><a href="#contact" className="text-gray-400 hover:text-white transition-colors">Contact</a></li>
               </ul>
             </div>

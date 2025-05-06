@@ -67,17 +67,17 @@ const Contact = () => {
           className="max-w-6xl mx-auto text-center mb-12"
         >
           <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Contactez-moi
+            Get in Touch
           </h2>
           <p className="text-gray-600 dark:text-gray-300">
-            N'hésitez pas à me contacter pour toute question ou opportunité de collaboration.
+            I would love to hear from you! Whether you have a question, a project in mind, or just want to say hello, feel free to reach out using the form below or directly via email or phone.
           </p>
         </motion.div>
 
         <div className="max-w-2xl mx-auto">
           {success ? (
             <div className="bg-green-100 dark:bg-green-900/20 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-8">
-              Message envoyé avec succès ! Je vous répondrai dès que possible.
+              Your message has been sent successfully! I will get back to you as soon as possible.
             </div>
           ) : error ? (
             <div className="bg-red-100 dark:bg-red-900/20 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-8">
@@ -88,7 +88,7 @@ const Contact = () => {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Nom
+                Full Name
               </label>
               <input
                 type="text"
@@ -120,7 +120,7 @@ const Contact = () => {
 
             <div>
               <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Sujet
+                Subject
               </label>
               <input
                 type="text"
@@ -161,13 +161,13 @@ const Contact = () => {
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
               ) : null}
-              {loading ? 'Envoi en cours...' : 'Envoyer'}
+              {loading ? 'Sending...' : 'Send Message'}
             </button>
           </form>
 
           <div className="mt-8">
             <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
-              Ou contactez-moi directement :
+              Or contact me directly :
             </h3>
             <div className="space-y-4">
               <div className="flex items-center gap-4">

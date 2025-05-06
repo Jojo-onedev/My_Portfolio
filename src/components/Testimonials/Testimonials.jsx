@@ -7,21 +7,21 @@ const Testimonials = () => {
       name: 'John Doe',
       role: 'Senior Developer',
       company: 'TechCorp',
-      quote: 'Jonathan est un développeur exceptionnel avec une excellente compréhension des meilleures pratiques. Son travail est toujours de haute qualité.',
+      quote: 'Jonathan is an exceptional developer with an excellent understanding of best practices. His work is always of high quality.',
       image: '/images/john.png'
     },
     {
       name: 'Jane Smith',
       role: 'Project Manager',
       company: 'WebSolutions',
-      quote: 'Travailler avec Jonathan a été un véritable plaisir. Il est très professionnel et livre toujours ses projets dans les délais.',
+      quote: 'Working with Jonathan was a real pleasure. He is very professional and always delivers his projects on time.',
       image: '/images/jane.png'
     },
     {
       name: 'Mike Johnson',
       role: 'UI/UX Designer',
       company: 'DesignLab',
-      quote: 'Jonathan a une excellente vision technique et sait transformer des idées en produits réels. Je recommande vivement ses services.',
+      quote: 'Jonathan has excellent technical vision and knows how to turn ideas into real products. I highly recommend his services.',
       image: '/images/mike.png'
     }
   ];
