@@ -11,7 +11,8 @@ const Skills = () => {
     { name: 'Tailwind CSS', level: '50%' },
     { name: 'Bootstrap', level: '65%' },
     { name: 'Laravel', level: '60%' },
-    { name: 'Flask', level: '30%' }
+    { name: 'Flask', level: '30%' },
+    { name: 'Figma', level: '60%' }
   ];
 
   return (

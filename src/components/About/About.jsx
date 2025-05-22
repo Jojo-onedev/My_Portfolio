@@ -25,7 +25,7 @@ const About = () => {
               className="relative w-full h-80 md:h-96 rounded-lg overflow-hidden shadow-lg"
             >
               <img 
-                src="/images/myimage.png" 
+                src="/images/myimage.jpg" 
                 alt="Jonathan BATIONO" 
                 className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-300"
               />
@@ -40,10 +40,6 @@ const About = () => {
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600 dark:text-gray-300">Name:</span>
                   <span className="font-medium text-gray-900 dark:text-white">BATIONO Jonathan</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-600 dark:text-gray-300">Date of birth:</span>
-                  <span className="font-medium text-gray-900 dark:text-white">September 23, 2003</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-600 dark:text-gray-300">Address:</span>
