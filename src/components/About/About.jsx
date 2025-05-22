@@ -25,7 +25,7 @@ const About = () => {
               className="relative w-full h-80 md:h-96 rounded-lg overflow-hidden shadow-lg"
             >
               <img 
-                src="/images/myimage.jpg" 
+                src="/images/0C1A4133hhh.jpg" 
                 alt="Jonathan BATIONO" 
                 className="w-full h-full object-cover transform hover:scale-105 transition-transform duration-300"
               />
