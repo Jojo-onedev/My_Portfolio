@@ -13,13 +13,13 @@ const Header = () => {
   const { t } = useTranslation();
 
   const menuItems = [
-    { href: "#hero", text: t('nav_home') },
-    { href: "#about", text: t('nav_about') },
-    { href: "#projects", text: t('nav_projects') },
-    { href: "#skills", text: t('nav_skills') },
-    { href: "#testimonials", text: t('nav_testimonials') },
+    { href: "/#hero", text: t('nav_home') },
+    { href: "/#about", text: t('nav_about') },
+    { href: "/#projects", text: t('nav_projects') },
+    { href: "/#skills", text: t('nav_skills') },
+    { href: "/#testimonials", text: t('nav_testimonials') },
     { href: "/news", text: t('nav_news') },
-    { href: "#contact", text: t('nav_contact') }
+    { href: "/#contact", text: t('nav_contact') }
   ];
 
   return (

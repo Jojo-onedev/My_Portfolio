@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { RefreshIcon } from '@heroicons/react/outline';
 import { ShareIcon } from '@heroicons/react/outline';
-
 
 const News = () => {
   const { t } = useTranslation();
@@ -14,7 +13,7 @@ const News = () => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
-  const fetchNews = async (newPage = 1) => {
+  const fetchNews = useCallback(async (newPage = 1) => {
     setLoading(true);
     setError(null);
     
@@ -53,21 +52,48 @@ const News = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [selectedCategory, t]);
 
-  const shareOnFacebook = (article) => {
+  const shareOnFacebook = useCallback((article) => {
     const url = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(article.url)}`;
     window.open(url, '_blank');
-  };
+  }, []);
 
-  const shareOnWhatsApp = (article) => {
+  const shareOnWhatsApp = useCallback((article) => {
     const url = `https://wa.me/?text=${encodeURIComponent(article.title)}%20${encodeURIComponent(article.url)}`;
     window.open(url, '_blank');
-  };
+  }, []);
+
+  const handleRefresh = useCallback(() => {
+    setPage(1);
+    fetchNews(1);
+  }, [fetchNews]);
+
+  const handleShare = useCallback((url) => {
+    if (navigator.share) {
+      navigator.share({
+        title: document.title,
+        url: url
+      }).catch(console.error);
+    } else {
+      // Fallback pour les navigateurs qui ne supportent pas l'API Web Share
+      const textArea = document.createElement('textarea');
+      textArea.value = url;
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand('copy');
+        alert(t('link_copied'));
+      } catch (err) {
+        console.error('Erreur lors de la copie:', err);
+      }
+      document.body.removeChild(textArea);
+    }
+  }, [t]);
 
   useEffect(() => {
     fetchNews();
-  }, [selectedCategory]);
+  }, [selectedCategory, fetchNews]);
 
   return (
     <section className="py-20 bg-white dark:bg-gray-900">

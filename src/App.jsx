@@ -1,5 +1,5 @@
 import React, { Suspense, useEffect, useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, unstable_HistoryRouter as HistoryRouter } from 'react-router-dom';
 import { DarkModeProvider } from './context/DarkModeContext';
 import { I18nextProvider } from 'react-i18next';
 import i18n from './i18n';
@@ -29,10 +29,18 @@ function App() {
     return <Loader />;
   }
 
+  // Configuration des futurs drapeaux de fonctionnalités
+  const routerConfig = {
+    future: {
+      v7_startTransition: true,
+      v7_relativeSplatPath: true
+    }
+  };
+
   return (
     <I18nextProvider i18n={i18n}>
       <DarkModeProvider>
-        <Router>
+        <Router {...routerConfig}>
           <div className="min-h-screen">
             <Suspense fallback={<Loader />}>
               <Header />
