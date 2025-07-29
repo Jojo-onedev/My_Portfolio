@@ -1,27 +1,31 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 const Testimonials = () => {
+  const { t } = useTranslation();
+  
+  // Récupérer les témoignages traduits
   const testimonials = [
     {
       name: 'John Doe',
-      role: 'Senior Developer',
+      role: t('testimonial1_role'),
       company: 'TechCorp',
-      quote: 'Jonathan is an exceptional developer with an excellent understanding of best practices. His work is always of high quality.',
+      quote: t('testimonial1_quote'),
       image: '/images/john.png'
     },
     {
       name: 'Jane Smith',
-      role: 'Project Manager',
+      role: t('testimonial2_role'),
       company: 'WebSolutions',
-      quote: 'Working with Jonathan was a real pleasure. He is very professional and always delivers his projects on time.',
+      quote: t('testimonial2_quote'),
       image: '/images/jane.png'
     },
     {
       name: 'Mike Johnson',
-      role: 'UI/UX Designer',
+      role: t('testimonial3_role'),
       company: 'DesignLab',
-      quote: 'Jonathan has excellent technical vision and knows how to turn ideas into real products. I highly recommend his services.',
+      quote: t('testimonial3_quote'),
       image: '/images/mike.png'
     }
   ];
@@ -37,10 +41,10 @@ const Testimonials = () => {
           className="max-w-6xl mx-auto text-center mb-12"
         >
           <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            What Clients Say
+            {t('testimonials_title')}
           </h2>
           <p className="text-xl text-gray-600 dark:text-gray-300">
-            Here are some thoughts from satisfied clients
+            {t('testimonials_subtitle')}
           </p>
         </motion.div>
 

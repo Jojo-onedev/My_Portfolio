@@ -1,10 +1,12 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faPhone, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import { faGithub, faLinkedin, faFacebook } from '@fortawesome/free-brands-svg-icons';
 
 const Footer = () => {
+  const { t } = useTranslation();
   const currentYear = new Date().getFullYear();
   const socialLinks = [
     {
@@ -37,8 +39,7 @@ const Footer = () => {
             <div>
               <h3 className="text-2xl font-bold mb-4">Jonathan</h3>
               <p className="text-gray-400 mb-4">
-                I am a passionate web developer with a focus on creating beautiful and functional web applications. My goal is to deliver high-quality solutions that meet the needs of my clients.
-                I am always eager to learn and improve my skills, and I love collaborating with others to bring ideas to life.
+                {t('footer_about')}
               </p>
               <div className="flex space-x-4">
                 {socialLinks.map((link, index) => (
@@ -61,20 +62,20 @@ const Footer = () => {
             </div>
 
             <div>
-              <h4 className="text-lg font-semibold mb-4">Quick Links</h4>
+              <h4 className="text-lg font-semibold mb-4">{t('footer_quick_links')}</h4>
               <ul className="space-y-2">
-                <li><a href="#hero" className="text-gray-400 hover:text-white transition-colors">Home</a></li>
-                <li><a href="#about" className="text-gray-400 hover:text-white transition-colors">About</a></li>
-                <li><a href="#projects" className="text-gray-400 hover:text-white transition-colors">Projects</a></li>
-                <li><a href="#skills" className="text-gray-400 hover:text-white transition-colors">Skills</a></li>
-                <li><a href="#testimonials" className="text-gray-400 hover:text-white transition-colors">Testimonials</a></li>
-                <li><a href="/news" className="text-gray-400 hover:text-white transition-colors">News</a></li>
-                <li><a href="#contact" className="text-gray-400 hover:text-white transition-colors">Contact</a></li>
+                <li><a href="#hero" className="text-gray-400 hover:text-white transition-colors">{t('nav_home')}</a></li>
+                <li><a href="#about" className="text-gray-400 hover:text-white transition-colors">{t('nav_about')}</a></li>
+                <li><a href="#projects" className="text-gray-400 hover:text-white transition-colors">{t('nav_projects')}</a></li>
+                <li><a href="#skills" className="text-gray-400 hover:text-white transition-colors">{t('nav_skills')}</a></li>
+                <li><a href="#testimonials" className="text-gray-400 hover:text-white transition-colors">{t('nav_testimonials')}</a></li>
+                <li><a href="/news" className="text-gray-400 hover:text-white transition-colors">{t('nav_news')}</a></li>
+                <li><a href="#contact" className="text-gray-400 hover:text-white transition-colors">{t('nav_contact')}</a></li>
               </ul>
             </div>
 
             <div>
-              <h4 className="text-lg font-semibold mb-4">Contact Me</h4>
+              <h4 className="text-lg font-semibold mb-4">{t('contact_title')}</h4>
               <div className="space-y-2">
                 <p className="text-gray-400">
                   <FontAwesomeIcon icon={faEnvelope} className="mr-2" /> bationojonathan5@gmail.com
@@ -89,10 +90,8 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="border-t border-gray-800 mt-12 pt-8 text-center">
-            <p className="text-gray-400">
-              © {currentYear} Jonathan. All rights reserved.
-            </p>
+          <div className="border-t border-gray-800 pt-8 mt-12 text-center text-gray-400">
+            <p>&copy; {currentYear} Jonathan Bationo. {t('all_rights_reserved')}</p>
           </div>
         </motion.div>
       </div>

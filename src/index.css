@@ -1,18 +1,57 @@
 @import '@fortawesome/fontawesome-svg-core/styles.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  html {
-    scroll-behavior: smooth;
-  }
+/* Styles de base */
+html {
+  scroll-behavior: smooth;
+  background-color: #ffffff;
+  color: #111827;
+  transition: background-color 0.2s, color 0.2s;
 }
 
-@layer utilities {
-  .gradient-text {
-    background: linear-gradient(135deg, #ff4d4d 0%, #ff4d4d 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
+/* Mode sombre */
+dark {
+  background-color: #111827;
+  color: #f3f4f6;
+}
+
+/* Styles du body */
+body {
+  min-height: 100vh;
+}
+
+/* Styles pour les titres */
+h1, h2, h3, h4, h5, h6 {
+  color: #111827;
+}
+
+dark h1,
+dark h2,
+dark h3,
+dark h4,
+dark h5,
+dark h6 {
+  color: #ffffff;
+}
+
+/* Styles pour le texte */
+p, span, div:not([class*="text-"]) {
+  color: #374151;
+}
+
+dark p,
+dark span,
+dark div:not([class*="text-"]) {
+  color: #d1d5db;
+}
+
+/* Texte dégradé */
+.gradient-text {
+  background: linear-gradient(135deg, #ff4d4d 0%, #ff4d4d 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }

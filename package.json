@@ -20,8 +20,11 @@
     "@tailwindcss/typography": "^0.5.16",
     "axios": "^1.8.4",
     "framer-motion": "^10.18.0",
+    "i18next": "^25.3.2",
+    "i18next-browser-languagedetector": "^8.2.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-i18next": "^15.6.1",
     "react-query": "^3.39.3",
     "react-router-dom": "^6.30.0"
   },

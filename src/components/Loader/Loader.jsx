@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 const Loader = () => {
+  const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -17,7 +19,7 @@ const Loader = () => {
   }
 
   return (
-    <div className="fixed inset-0 bg-black z-50 flex items-center justify-center">
+    <div className="fixed inset-0 bg-black z-50 flex flex-col items-center justify-center">
       <motion.div 
         initial={{ scale: 0 }}
         animate={{ scale: [1, 1.1, 1] }}
@@ -63,6 +65,7 @@ const Loader = () => {
           </motion.div>
         </motion.div>
       </motion.div>
+      <div className="text-white text-xl font-semibold mt-6">{t('loading')}...</div>
     </div>
   );
 };

@@ -3,14 +3,14 @@
     "title": "Shoes Landing Page",
     "description": "Landing page for a shoe company",
     "image": "/images/Shoes.png",
-    "link": "https://github.com/Jojo-onedev/ShoeShop-main",
+    "link": "https://jojo-onedev.github.io/ShoeShop-main",
     "category": "web"
   },
   {
     "title": "Loop Studio Landing Page",
     "description": "Presentation of a VR studio landing page",
     "image": "/images/loopstudio.jpeg",
-    "link": "https://github.com/Jojo-onedev/Loopstudio_Landingpage",
+    "link": "https://jojo-onedev.github.io/Loopstudio_Landingpage",
     "category": "dev"
   },
   {
@@ -31,7 +31,7 @@
       "title": "Portfolio",
       "description": "My portfolio website",
       "image": "/images/portfolio.png",
-      "link": "/",
+      "link": "http://bationojonathan.netlify.app/",
       "category": "web"
     }
 ]

@@ -1,7 +1,9 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 const Skills = () => {
+  const { t } = useTranslation();
   const skills = [
     { name: 'HTML', level: '90%' },
     { name: 'CSS', level: '85%' },
@@ -26,7 +28,7 @@ const Skills = () => {
           className="max-w-6xl mx-auto text-center mb-12"
         >
           <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            My Skills
+            {t('skills_title')}
           </h2>
         </motion.div>
 

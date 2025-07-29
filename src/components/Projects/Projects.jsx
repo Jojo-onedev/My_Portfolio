@@ -1,8 +1,10 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const Projects = () => {
+  const { t } = useTranslation();
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [projects, setProjects] = useState([]);
 
@@ -99,7 +101,7 @@ const Projects = () => {
                       rel="noopener noreferrer"
                       className="mt-4 inline-block px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors"
                     >
-                      View Project
+                      {t('view_project')}
                     </a>
                   </div>
                 </div>

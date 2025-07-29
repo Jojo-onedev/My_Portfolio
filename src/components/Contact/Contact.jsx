@@ -1,15 +1,25 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import emailjs from '@emailjs/browser';
+import { useTranslation } from 'react-i18next';
 
 
 const Contact = () => {
+  const { t } = useTranslation();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     subject: '',
     message: ''
   });
+  
+  // Récupérer les placeholders traduits
+  const placeholders = {
+    name: t('contact_name'),
+    email: t('contact_email'),
+    subject: t('contact_subject'),
+    message: t('contact_message')
+  };
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
@@ -67,28 +77,24 @@ const Contact = () => {
           className="max-w-6xl mx-auto text-center mb-12"
         >
           <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Get in Touch
+            {t('contact_title')}
           </h2>
           <p className="text-gray-600 dark:text-gray-300">
-            I would love to hear from you! Whether you have a question, a project in mind, or just want to say hello, feel free to reach out using the form below or directly via email or phone.
+            {t('contact_description')}
           </p>
         </motion.div>
 
         <div className="max-w-2xl mx-auto">
           {success ? (
             <div className="bg-green-100 dark:bg-green-900/20 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-8">
-              Your message has been sent successfully! I will get back to you as soon as possible.
-            </div>
-          ) : error ? (
-            <div className="bg-red-100 dark:bg-red-900/20 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-8">
-              {error}
+              {t('contact_success')} {t('contact_success_details')}
             </div>
           ) : null}
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Full Name
+                {t('contact_name')}
               </label>
               <input
                 type="text"
@@ -98,13 +104,13 @@ const Contact = () => {
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="Votre nom"
+                placeholder={placeholders.name}
               />
             </div>
 
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Email
+                {t('contact_email')}
               </label>
               <input
                 type="email"
@@ -114,13 +120,13 @@ const Contact = () => {
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="Votre email"
+                placeholder={placeholders.email}
               />
             </div>
 
             <div>
               <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Subject
+                {t('contact_subject')}
               </label>
               <input
                 type="text"
@@ -130,13 +136,13 @@ const Contact = () => {
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="Sujet du message"
+                placeholder={placeholders.subject}
               />
             </div>
 
             <div>
               <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
-                Message
+                {t('contact_message')}
               </label>
               <textarea
                 id="message"
@@ -146,7 +152,7 @@ const Contact = () => {
                 required
                 rows="4"
                 className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                placeholder="Votre message"
+                placeholder={placeholders.message}
               ></textarea>
             </div>
 
@@ -161,7 +167,7 @@ const Contact = () => {
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
               ) : null}
-              {loading ? 'Sending...' : 'Send Message'}
+              {loading ? t('sending') : t('contact_send')}
             </button>
           </form>
 
