@@ -13,28 +13,53 @@ const News = () => {
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
+  // Fonction pour ajouter un délai entre les requêtes
+  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+
   const fetchNews = useCallback(async (newPage = 1) => {
     setLoading(true);
     setError(null);
     
     try {
-      const tags = ['javascript', 'typescript', 'python', 'java', 'figma', 'HTML', 'CSS', 'react', 'nodejs', 'webdev'];
+      const tags = ['javascript', 'react', 'webdev']; // Réduit le nombre de tags
       
       // Filtrer les tags selon la catégorie sélectionnée
       const filteredTags = selectedCategory === 'all' 
         ? tags 
         : [selectedCategory];
       
-      const promises = filteredTags.map(tag => 
-        fetch(`https://dev.to/api/articles?tag=${tag}&per_page=3&page=${newPage}`)
-      );
+      const results = [];
       
-      const responses = await Promise.all(promises);
-      const data = await Promise.all(responses.map(res => res.json()));
+      // Au lieu de faire toutes les requêtes en parallèle, on les fait les unes après les autres
+      for (const tag of filteredTags) {
+        try {
+          const response = await fetch(`https://dev.to/api/articles?tag=${tag}&per_page=3&page=${newPage}`);
+          
+          if (!response.ok) {
+            if (response.status === 429) {
+              // Si on a trop de requêtes, on attend un peu avant de réessayer
+              await delay(1000); // Attendre 1 seconde
+              continue; // On passe à la prochaine itération
+            }
+            throw new Error(`Erreur HTTP: ${response.status}`);
+          }
+          
+          const data = await response.json();
+          results.push(...data);
+          
+          // Petit délai entre chaque requête pour éviter le rate limiting
+          await delay(300);
+          
+        } catch (err) {
+          console.error(`Erreur lors du chargement des articles pour ${tag}:`, err);
+          // On continue avec les autres tags même si une requête échoue
+          continue;
+        }
+      }
       
-      const newArticles = data.flat().map((article, index) => ({
+      const newArticles = results.map((article, index) => ({
         ...article,
-        uniqueId: `${article.id}_${index}_${page}`
+        uniqueId: `${article.id}_${index}_${newPage}`
       }));
       
       if (newPage === 1) {
@@ -43,12 +68,11 @@ const News = () => {
         setNews(prev => [...prev, ...newArticles]);
       }
       
-      if (newArticles.length < 15) {
-        setHasMore(false);
-      }
+      setHasMore(newArticles.length > 0);
+      
     } catch (err) {
+      console.error('Erreur générale:', err);
       setError(t('news_error_loading'));
-      console.error('Erreur:', err);
     } finally {
       setLoading(false);
     }
