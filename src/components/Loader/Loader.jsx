@@ -65,7 +65,6 @@ const Loader = () => {
           </motion.div>
         </motion.div>
       </motion.div>
-      <div className="text-white text-xl font-semibold mt-6">{t('loading')}...</div>
     </div>
   );
 };
