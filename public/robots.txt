@@ -3,4 +3,4 @@ Allow: /
 Disallow: /admin/
 Disallow: /admin
 
-Sitemap: https://bationojonathan.netlify.app/sitemap.xml
+Sitemap: https://bationojonathan.me/sitemap.xml

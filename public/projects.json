@@ -27,11 +27,11 @@
     "link": "https://github.com/Dayende-ib/gestion-bibliotheque.git",
     "category": "dev"
   },
-    {
-      "title": "Portfolio",
-      "description": "My portfolio website",
-      "image": "/images/portfolio.png",
-      "link": "http://bationojonathan.netlify.app/",
-      "category": "web"
-    }
+  {
+    "title": "Portfolio",
+    "description": "My portfolio website",
+    "image": "/images/portfolio.png",
+    "link": "http://bationojonathan.me/",
+    "category": "web"
+  }
 ]
