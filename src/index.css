@@ -4,54 +4,123 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Styles de base */
+:root {
+  --bg-dark: #121212;
+  --surface-dark: #1e1e1e;
+  --primary-red: #871A1A;
+}
+
 html {
   scroll-behavior: smooth;
-  background-color: #ffffff;
-  color: #111827;
-  transition: background-color 0.2s, color 0.2s;
+  overflow-x: hidden;
 }
 
-/* Mode sombre */
-dark {
-  background-color: #111827;
-  color: #f3f4f6;
-}
-
-/* Styles du body */
 body {
+  @apply bg-[#f1f3f6] dark:bg-[#121212] text-gray-800 dark:text-gray-200 antialiased transition-colors duration-500;
   min-height: 100vh;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  overflow-x: hidden;
 }
 
-/* Styles pour les titres */
-h1, h2, h3, h4, h5, h6 {
-  color: #111827;
+/* Glassmorphism utility */
+.glass {
+  @apply backdrop-blur-xl border transition-all duration-300;
+  background: rgba(255, 255, 255, 0.4);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
-dark h1,
-dark h2,
-dark h3,
-dark h4,
-dark h5,
-dark h6 {
-  color: #ffffff;
+.dark .glass {
+  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(255, 255, 255, 0.05);
 }
 
-/* Styles pour le texte */
-p, span, div:not([class*="text-"]) {
-  color: #374151;
+/* Neumorphism Utilities */
+.neumorph-card {
+  @apply rounded-[2rem] transition-all duration-500;
+  background: #f1f3f6;
+  box-shadow: 18px 18px 30px #d1d9e6, 
+              -18px -18px 30px #ffffff;
 }
 
-dark p,
-dark span,
-dark div:not([class*="text-"]) {
-  color: #d1d5db;
+.dark .neumorph-card {
+  background: #1a1a1a;
+  box-shadow: 10px 10px 20px rgba(0, 0, 0, 0.4), 
+              -10px -10px 20px rgba(255, 255, 255, 0.02);
 }
 
-/* Texte dégradé */
+.neumorph-button {
+  @apply rounded-2xl transition-all duration-300;
+  background: #f1f3f6;
+  box-shadow: 6px 6px 12px #ced4de, 
+              -6px -6px 12px #ffffff;
+}
+
+.dark .neumorph-button {
+  background: #1e1e1e;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3), 
+              -5px -5px 10px rgba(255, 255, 255, 0.02);
+}
+
+.neumorph-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 8px 8px 16px #d1d9e6, 
+              -8px -8px 16px #ffffff;
+}
+
+.dark .neumorph-button:hover {
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3), 
+              -2px -2px 5px rgba(255, 255, 255, 0.01);
+}
+
+.neumorph-button:active {
+  box-shadow: inset 4px 4px 8px #d1d9e6, 
+              inset -4px -4px 8px #ffffff;
+}
+
+.dark .neumorph-button:active {
+  box-shadow: inset 3px 3px 6px rgba(0, 0, 0, 0.4), 
+              inset -3px -3px 6px rgba(255, 255, 255, 0.02);
+}
+
+/* Glowing background effect */
+.bg-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  background: radial-gradient(circle at 20% 30%, rgba(135, 26, 26, 0.05) 0%, transparent 40%),
+              radial-gradient(circle at 80% 70%, rgba(135, 26, 26, 0.05) 0%, transparent 40%);
+}
+
 .gradient-text {
-  background: linear-gradient(135deg, #ff4d4d 0%, #ff4d4d 100%);
+  background: linear-gradient(135deg, #871A1A 0%, #b22222 100%);
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+/* Modern Glass Cards */
+.modern-card {
+  @apply relative overflow-hidden backdrop-blur-md border transition-all duration-500 rounded-[2.5rem];
+}
+
+.modern-card-challenge {
+  @apply bg-black/5 dark:bg-white/[0.02] border-red-500/10 hover:border-red-500/40;
+  box-shadow: 0 8px 32px 0 rgba(135, 26, 26, 0.05);
+}
+
+.modern-card-solution {
+  @apply bg-primary/5 dark:bg-primary/[0.03] border-primary/10 hover:border-primary/40;
+  box-shadow: 0 8px 32px 0 rgba(135, 26, 26, 0.1);
+}
+
+.card-glow {
+  @apply absolute -inset-px opacity-0 transition-opacity duration-500 pointer-events-none;
+  background: radial-gradient(600px circle at var(--mouse-x) var(--mouse-y), rgba(135, 26, 26, 0.15), transparent 40%);
+}
+
+.modern-card:hover .card-glow {
+  @apply opacity-100;
 }

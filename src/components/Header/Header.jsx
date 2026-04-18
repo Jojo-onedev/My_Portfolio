@@ -3,83 +3,89 @@ import { Link } from 'react-router-dom';
 import { MoonIcon, SunIcon } from '@heroicons/react/outline';
 import { MenuIcon, XIcon } from '@heroicons/react/solid';
 import { DarkModeContext } from '../../context/DarkModeContext';
-import { useTranslation } from 'react-i18next';
 import LanguageSwitcher from '../LanguageSwitcher/LanguageSwitcher';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 const Header = () => {
   const { isDarkMode, toggleDarkMode } = useContext(DarkModeContext);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { t } = useTranslation();
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const menuItems = [
-    { href: "/#hero", text: t('nav_home') },
-    { href: "/#about", text: t('nav_about') },
-    { href: "/#projects", text: t('nav_projects') },
-    { href: "/#skills", text: t('nav_skills') },
-    { href: "/#testimonials", text: t('nav_testimonials') },
-    { href: "/news", text: t('nav_news') },
-    { href: "/#contact", text: t('nav_contact') }
+    { href: "/#hero", text: t('header.home') },
+    { href: "/#projects", text: t('header.projects') },
+    { href: "/#skills", text: t('header.skills') },
+    { href: "/news", text: t('header.news') },
+    { href: "/#contact", text: t('header.contact') }
   ];
 
   return (
-    <header className="fixed w-full z-50 bg-white/60 dark:bg-gray-900/60 backdrop-blur-sm shadow-sm">
-      <nav className="container mx-auto px-6 py-3">
-        <div className="flex items-center justify-between w-full">
-          {/* Logo à gauche */}
-          <Link to="/" className="text-2xl font-bold text-gray-800 dark:text-white flex-shrink-0">
-            J.Folio
+    <header className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'py-4' : 'py-6'}`}>
+      <nav className={`container mx-auto px-6`}>
+        <div className={`flex items-center justify-between mx-auto max-w-7xl glass px-8 py-4 rounded-full transition-all duration-300 border border-gray-100 dark:border-white/5 ${scrolled ? 'shadow-xl bg-white/80 dark:bg-black/80' : 'shadow-none'}`}>
+          {/* Logo */}
+          <Link to="/" className="text-2xl font-black gradient-text flex-shrink-0 tracking-tighter">
+            J.FOLIO
           </Link>
 
-          {/* Navigation desktop au centre */}
-          <div className="hidden md:flex items-center justify-center flex-1 px-8">
-            <div className="flex space-x-8">
-              {menuItems.map((item) => (
+          {/* Desktop Nav */}
+          <div className="hidden md:flex items-center space-x-10">
+            {menuItems.map((item, index) => (
+              item.href.startsWith('/#') || item.href.startsWith('#') ? (
                 <a
-                  key={item.text}
+                  key={index}
                   href={item.href}
-                  className="text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors whitespace-nowrap"
+                  className="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors uppercase tracking-widest"
                 >
                   {item.text}
                 </a>
-              ))}
-            </div>
+              ) : (
+                <Link
+                  key={index}
+                  to={item.href}
+                  className="text-sm font-medium text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors uppercase tracking-widest"
+                >
+                  {item.text}
+                </Link>
+              )
+            ))}
           </div>
 
-          {/* Boutons à droite */}
-          <div className="flex items-center space-x-2">
-            {/* Language switcher */}
+          {/* Actions */}
+          <div className="flex items-center space-x-6">
             <div className="hidden md:block">
               <LanguageSwitcher />
             </div>
             
-            {/* Dark mode toggle */}
-            <div className="hidden md:block">
-              <button 
-                onClick={toggleDarkMode}
-                className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                aria-label={isDarkMode ? t('switch_to_light') : t('switch_to_dark')}
-              >
-                {isDarkMode ? (
-                  <SunIcon className="w-6 h-6 text-yellow-500" />
-                ) : (
-                  <MoonIcon className="w-6 h-6 text-gray-600 dark:text-gray-300" />
-                )}
-              </button>
-            </div>
+            <button 
+              onClick={toggleDarkMode}
+              className="p-2 rounded-full neumorph-button text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all shadow-lg shadow-black/5"
+            >
+              {isDarkMode ? <SunIcon className="w-5 h-5" /> : <MoonIcon className="w-5 h-5" />}
+            </button>
 
-            {/* Bouton menu mobile */}
+            {/* CTA Button */}
+            <a href="#contact" className="hidden lg:block px-6 py-2.5 rounded-full bg-primary text-white text-sm font-bold hover:scale-105 transition-all shadow-lg shadow-primary/20">
+              {t('header.cta')}
+            </a>
+
+            {/* Mobile menu toggle */}
             <div className="md:hidden">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="p-2 -mr-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                aria-label={isMenuOpen ? t('close_menu') : t('open_menu')}
+                className="p-2 text-gray-900 dark:text-white"
               >
-                {isMenuOpen ? (
-                  <XIcon className="w-6 h-6" />
-                ) : (
-                  <MenuIcon className="w-6 h-6" />
-                )}
+                {isMenuOpen ? <XIcon className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" />}
               </button>
             </div>
           </div>
@@ -89,69 +95,40 @@ const Header = () => {
         <AnimatePresence>
           {isMenuOpen && (
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              className="md:hidden mt-4"
             >
-              <motion.div 
-                className="fixed inset-y-0 right-0 w-full max-w-sm bg-white dark:bg-gray-900 shadow-lg"
-                initial={{ x: '100%' }}
-                animate={{ x: 0 }}
-                exit={{ x: '100%' }}
-                transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-              >
-                <div className="p-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <Link 
-                      to="/" 
-                      className="text-2xl font-bold text-gray-800 dark:text-white"
+              <div className="glass rounded-3xl p-6 flex flex-col space-y-4 shadow-2xl border border-gray-100 dark:border-white/5 bg-white/90 dark:bg-black/90">
+                {menuItems.map((item, index) => (
+                  item.href.startsWith('/#') || item.href.startsWith('#') ? (
+                    <a
+                      key={index}
+                      href={item.href}
                       onClick={() => setIsMenuOpen(false)}
+                      className="text-lg font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
                     >
-                      J.Folio
+                      {item.text}
+                    </a>
+                  ) : (
+                    <Link
+                      key={index}
+                      to={item.href}
+                      onClick={() => setIsMenuOpen(false)}
+                      className="text-lg font-medium text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white transition-colors"
+                    >
+                      {item.text}
                     </Link>
-                    <button
-                      onClick={() => setIsMenuOpen(false)}
-                      className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                      aria-label="Fermer le menu"
-                    >
-                      <XIcon className="w-6 h-6" />
-                    </button>
-                  </div>
-          
-                  <div className="space-y-4 w-full bg-gray-100 dark:bg-gray-800 p-4 rounded-lg">
-                    {menuItems.map((item) => (
-                      <a
-                        key={item.text}
-                        href={item.href}
-                        onClick={() => setIsMenuOpen(false)}
-                        className="block px-4 py-2 text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors"
-                      >
-                        {item.text}
-                      </a>
-                    ))}
-                    
-                    <div className="flex items-center justify-between px-4 py-2">
-                      <button 
-                        onClick={toggleDarkMode}
-                        className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-                        aria-label={isDarkMode ? t('switch_to_light') : t('switch_to_dark')}
-                      >
-                        {isDarkMode ? (
-                          <SunIcon className="w-6 h-6 text-yellow-500" />
-                        ) : (
-                          <MoonIcon className="w-6 h-6 text-gray-600 dark:text-gray-300" />
-                        )}
-                      </button>
-                      
-                      <div className="md:hidden">
-                        <LanguageSwitcher />
-                      </div>
-                    </div>
-                  </div>
+                  )
+                ))}
+                <div className="pt-4 border-t border-gray-100 dark:border-white/5 flex items-center justify-between">
+                  <LanguageSwitcher />
+                  <a href="#contact" className="px-6 py-2 rounded-full bg-primary text-white font-bold text-center">
+                    {t('header.cta')}
+                  </a>
                 </div>
-              </motion.div>
+              </div>
             </motion.div>
           )}
         </AnimatePresence>

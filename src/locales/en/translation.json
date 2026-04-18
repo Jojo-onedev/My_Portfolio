@@ -1,0 +1,131 @@
+{
+  "header": {
+    "home": "Home",
+    "about": "About",
+    "projects": "Projects",
+    "skills": "Skills",
+    "news": "News",
+    "contact": "Contact",
+    "cta": "Get in Touch"
+  },
+  "hero": {
+    "role": "Full-Stack Web Developer & Designer",
+    "subtitle": "I design immersive digital experiences combining minimalist aesthetics with cutting-edge performance.",
+    "projects": "Explore My Work",
+    "contact": "Let's Talk",
+    "availability": "Available for Hire",
+    "clients": "Happy Clients",
+    "realized": "Projects Completed",
+    "experience": "Years Experience"
+  },
+  "about": {
+    "visionLabel": "001 / Vision & Strategy",
+    "title": "Transform your Challenges into Growth.",
+    "description": "I don't just code; I design business solutions that generate measurable results.",
+    "problemsLabel": "002 / Challenges",
+    "problemsTitle1": "Your current",
+    "problemsTitle2": "challenges",
+    "problemsDesc": "The obstacles slowing your digital growth and impacting your conversion rate.",
+    "challenges": [
+      { "title": "Slow & Outdated Site", "desc": "Every second of load time reduces ROI by 7%. Don't let clients leave for the competition." },
+      { "title": "Lack of Conversion", "desc": "Traffic that never turns into clients is an expense. Optimize your funnel." },
+      { "title": "Unprofessional Image", "desc": "Your site is your first impression. A dated design ruins your authority." },
+      { "title": "Lack of Data", "desc": "Driving without indicators is navigating in the fog. Make informed decisions." }
+    ],
+    "approachLabel": "003 / Action Plan",
+    "approachTitle1": "My",
+    "approachTitle2": "solutions",
+    "approachDesc": "Custom strategies to transform your online presence into a conversion engine.",
+    "solutions": [
+      { "title": "Extreme Performance", "desc": "Ultra-fast architecture with 99+ Lighthouse scores. Boosted SEO and seamless UX." },
+      { "title": "ROI-Driven UX", "desc": "High-end psychological design to captivate attention and maximize conversion rates." },
+      { "title": "Premium Aesthetics", "desc": "A unique and memorable visual identity positioning your brand as a leader." },
+      { "title": "Data-Driven Approach", "desc": "Advanced tracking and real-time analytics to measure the direct impact of each interaction." }
+    ],
+    "audienceLabel": "004 / I specifically help",
+    "audiences": {
+      "startups": "Startups",
+      "pme": "SMEs",
+      "entrepreneurs": "Entrepreneurs",
+      "ecommerce": "E-commerce"
+    },
+    "cta": "Analyze my project"
+  },
+  "projects": {
+    "label": "My Portfolio",
+    "title1": "Measurable",
+    "title2": "Results",
+    "description": "Each project is a tailored solution designed to maximize impact and conversion.",
+    "filters": {
+      "all": "All Projects",
+      "web": "Conversion",
+      "dev": "Performance",
+      "ui": "Experience"
+    },
+    "view": "View Project",
+    "ctaTitle1": "Ready to join",
+    "ctaTitle2": "Excellence",
+    "ctaDesc": "Every second counts. Don't leave your potential untapped due to a dated design.",
+    "ctaBtn": "Launch my project now"
+  },
+  "skills": {
+    "stackLabel": "Tech Stack",
+    "expertise1": "Technical",
+    "expertise2": "Expertise",
+    "loadingStack": "Initializing stack...",
+    "methodologyLabel": "My Methodology",
+    "effectiveness1": "Guaranteed",
+    "effectiveness2": "Efficiency",
+    "methodologyDesc": "An iterative and transparent process designed to transform your visions into digital realities.",
+    "duration": "Duration: ",
+    "steps": [
+      { "title": "Discovery & Audit", "desc": "In-depth analysis of your ecosystem to identify growth opportunities.", "duration": "2-3 days" },
+      { "title": "Multi-Channel Strategy", "desc": "Design of a scalable architecture and conversion-oriented UX.", "duration": "3-5 days" },
+      { "title": "Cutting-Edge Engineering", "desc": "High-performance development using the latest web technologies.", "duration": "2-4 weeks" },
+      { "title": "Scalability & Growth", "desc": "Optimized launch and continuous monitoring to ensure maximum ROI.", "duration": "Continuous" }
+    ],
+    "guarantees": [
+      { "title": "Guaranteed Deadlines", "desc": "Strict adherence to the schedule" },
+      { "title": "Fixed Budget", "desc": "No hidden costs" },
+      { "title": "100% Satisfaction", "desc": "Unlimited iterations" },
+      { "title": "Premium Support", "desc": "Response in < 24h" }
+    ]
+  },
+  "testimonials": {
+    "label": "Client Feedback",
+    "title1": "They trust",
+    "title2": "Me",
+    "description": "My clients' success is my only true metric of success."
+  },
+  "contact": {
+    "label": "Get in Touch",
+    "title1": "Let's plan your",
+    "title2": "Next",
+    "title3": "step.",
+    "description": "Have a vision? I have the expertise to transform it into an exceptional digital product.",
+    "emailLabel": "Personal Email",
+    "whatsappLabel": "WhatsApp Fast Track",
+    "successMsg": "🚀 Message received! I'll get back to you shortly.",
+    "errorMsg": "An error occurred while sending the message",
+    "formName": "Your Name",
+    "formEmail": "Your Email",
+    "formSubject": "Message Subject",
+    "formMessage": "How can I help you?",
+    "formSubmit": "Send Message",
+    "sending": "Sending..."
+  },
+  "footer": {
+    "desc": "High-performance web solutions engineer. I transform technical complexity into business growth.",
+    "nav": "Navigation",
+    "contact": "Contact"
+  },
+  "notfound": {
+    "title": "Page Not Found",
+    "desc": "Oops! The page you are looking for seems to have disappeared or has been moved.",
+    "button": "Return to Home"
+  },
+  "seo": {
+    "title": "Jonathan | Full-Stack Web Developer & Designer",
+    "description": "High-performance web solutions engineer. I transform technical complexity into business growth and immersive digital experiences."
+  }
+}

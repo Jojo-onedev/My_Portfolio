@@ -1,0 +1,131 @@
+{
+  "header": {
+    "home": "Accueil",
+    "about": "À propos",
+    "projects": "Projets",
+    "skills": "Compétences",
+    "news": "Actualités",
+    "contact": "Contact",
+    "cta": "Me Contacter"
+  },
+  "hero": {
+    "role": "Developpeur web & Designer",
+    "subtitle": "Je conçois des expériences numériques immersives alliant esthétique minimaliste et performances de pointe.",
+    "projects": "Explorer mes travaux",
+    "contact": "Parlons de votre projet",
+    "availability": "Disponible pour mission",
+    "clients": "Clients Satisfaits",
+    "realized": "Projects Réalisés",
+    "experience": "Experience"
+  },
+  "about": {
+    "visionLabel": "001 / Vision & Stratégie",
+    "title": "Transformez vos Défis en Croissance.",
+    "description": "Je ne me contente pas de coder ; je conçois des solutions business qui génèrent des résultats mesurables.",
+    "problemsLabel": "002 / Problématiques",
+    "problemsTitle1": "Vos défis",
+    "problemsTitle2": "actuels",
+    "problemsDesc": "Les obstacles qui freinent votre croissance digitale et impactent votre taux de conversion.",
+    "challenges": [
+      { "title": "Site lent & obsolète", "desc": "Chaque seconde de chargement réduit votre ROI de 7%. Ne laissez pas vos clients partir chez la concurrence." },
+      { "title": "Absence de conversion", "desc": "Un trafic qui ne se transforme jamais en clients est un investissement perdu. Optimisez votre entonnoir." },
+      { "title": "Image non-professionnelle", "desc": "Votre site est votre première impression. Un design daté ternit votre autorité sur le marché." },
+      { "title": "Manque de data", "desc": "Piloter sans indicateurs précis, c'est naviguer dans le brouillard. Prenez des décisions éclairées." }
+    ],
+    "approachLabel": "003 / Plan d'Action",
+    "approachTitle1": "Mes",
+    "approachTitle2": "solutions",
+    "approachDesc": "Des stratégies sur mesure pour transformer votre présence en ligne en une machine à conversion.",
+    "solutions": [
+      { "title": "Performance Extrême", "desc": "Architecture ultra-rapide avec des scores Lighthouse de 99+. Un SEO boosté et une expérience utilisateur sans friction." },
+      { "title": "UX Orientée ROI", "desc": "Design psychologique haut de gamme conçu pour captiver l'attention et maximiser vos taux de conversion." },
+      { "title": "Aesthetics Premium", "desc": "Une identité visuelle unique et mémorable qui positionne votre marque comme leader sur son secteur." },
+      { "title": "Data-Driven Approach", "desc": "Tracking avancé et analytique en temps réel pour mesurer l'impact direct de chaque interaction client." }
+    ],
+    "audienceLabel": "004 / J'accompagne spécifiquement",
+    "audiences": {
+      "startups": "Startups",
+      "pme": "PME",
+      "entrepreneurs": "Entrepreneurs",
+      "ecommerce": "E-commerce"
+    },
+    "cta": "Analyser mon projet"
+  },
+  "projects": {
+    "label": "Mes Réalisations",
+    "title1": "Des Résultats",
+    "title2": "Mesurables",
+    "description": "Chaque projet est une solution sur mesure conçue pour maximiser l'impact et la conversion.",
+    "filters": {
+      "all": "Tous les projets",
+      "web": "Conversion",
+      "dev": "Performance",
+      "ui": "Expérience"
+    },
+    "view": "Voir le projet",
+    "ctaTitle1": "Prêt à rejoindre",
+    "ctaTitle2": "l'Excellence",
+    "ctaDesc": "Chaque seconde compte. Ne laissez pas votre potentiel inexploité par un design daté.",
+    "ctaBtn": "Lancer mon projet maintenant"
+  },
+  "skills": {
+    "stackLabel": "Stack Technologique",
+    "expertise1": "Expertise",
+    "expertise2": "Technique",
+    "loadingStack": "Initialisation de la stack...",
+    "methodologyLabel": "Ma Méthodologie",
+    "effectiveness1": "Une Efficacité",
+    "effectiveness2": "Garantie",
+    "methodologyDesc": "Un processus itératif et transparent conçu pour transformer vos visions en réalités numériques.",
+    "duration": "Durée: ",
+    "steps": [
+      { "title": "Découverte & Audit", "desc": "Analyse approfondie de votre écosystème pour identifier les opportunités de croissance.", "duration": "2-3 jours" },
+      { "title": "Stratégie Multi-Canal", "desc": "Conception d'une architecture scalable et d'une UX orientée conversion.", "duration": "3-5 jours" },
+      { "title": "Ingénierie de Pointe", "desc": "Développement haute performance utilisant les dernières technologies web.", "duration": "2-4 semaines" },
+      { "title": "Scalabilité & Croissance", "desc": "Lancement optimisé et monitoring continu pour garantir un ROI maximal.", "duration": "Continu" }
+    ],
+    "guarantees": [
+      { "title": "Délais Garantis", "desc": "Respect strict du planning" },
+      { "title": "Budget Fixe", "desc": "Aucun coût caché" },
+      { "title": "Satisfaction 100%", "desc": "Itérations illimitées" },
+      { "title": "Support Premium", "desc": "Réponse en < 24h" }
+    ]
+  },
+  "testimonials": {
+    "label": "Retours Clients",
+    "title1": "Ils me font",
+    "title2": "Confiance",
+    "description": "La réussite de mes clients est ma seule véritable métrique de succès."
+  },
+  "contact": {
+    "label": "Get in Touch",
+    "title1": "Parlons de votre",
+    "title2": "Prochaine",
+    "title3": "étape.",
+    "description": "Vous avez une vision ? J'ai l'expertise pour la transformer en un produit numérique d'exception.",
+    "emailLabel": "Email Personnel",
+    "whatsappLabel": "WhatsApp Fast Track",
+    "successMsg": "🚀 Message reçu ! Je reviens vers vous rapidement.",
+    "errorMsg": "Une erreur est survenue lors de l'envoi du message",
+    "formName": "Votre Nom",
+    "formEmail": "Votre Email",
+    "formSubject": "Objet du message",
+    "formMessage": "Comment puis-je vous aider ?",
+    "formSubmit": "Envoyer mon message",
+    "sending": "Envoi en cours..."
+  },
+  "footer": {
+    "desc": "Ingénieur de solutions web haute performance. Je transforme la complexité technique en croissance business.",
+    "nav": "Navigation",
+    "contact": "Contact"
+  },
+  "notfound": {
+    "title": "Page Non Trouvée",
+    "desc": "Oups ! La page que vous recherchez semble avoir disparu ou a été déplacée.",
+    "button": "Retourner à l'accueil"
+  },
+  "seo": {
+    "title": "Jonathan | Développeur Web Full-Stack & Designer",
+    "description": "Ingénieur de solutions web haute performance. Je transforme la complexité technique en croissance business et d'expériences digitales immersives."
+  }
+}

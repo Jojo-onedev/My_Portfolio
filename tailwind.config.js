@@ -8,7 +8,16 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#ff4d4d',
+        primary: '#871A1A',
+        dark: {
+          bg: '#121212',
+          surface: '#1e1e1e',
+          accent: '#871A1A',
+        }
+      },
+      boxShadow: {
+        'neumorph-dark': '9px 9px 16px rgb(0,0,0,0.4), -9px -9px 16px rgba(255,255,255, 0.05)',
+        'neumorph-dark-inset': 'inset 9px 9px 16px rgb(0,0,0,0.4), inset -9px -9px 16px rgba(255,255,255, 0.05)',
       },
       animation: {
         'fade-in': 'fadeIn 1s ease-out',
