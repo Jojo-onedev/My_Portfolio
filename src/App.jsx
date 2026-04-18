@@ -15,6 +15,7 @@ import { AdminAuthProvider } from './context/AdminAuthContext';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import CustomCursor from './components/Cursor/CustomCursor';
+import { Analytics } from '@vercel/analytics/react';
 
 // Lazy Loaded Routes (Code Splitting)
 const News = React.lazy(() => import('./components/News/News'));
@@ -126,6 +127,7 @@ function App() {
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
+      <Analytics />
     </div>
   );
 }
