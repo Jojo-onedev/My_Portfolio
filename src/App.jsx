@@ -16,6 +16,7 @@ import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import CustomCursor from './components/Cursor/CustomCursor';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 // Lazy Loaded Routes (Code Splitting)
 const News = React.lazy(() => import('./components/News/News'));
@@ -128,6 +129,7 @@ function App() {
         </Routes>
       </Suspense>
       <Analytics />
+      <SpeedInsights />
     </div>
   );
 }
