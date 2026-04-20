@@ -106,7 +106,7 @@ const About = () => {
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="mb-32 reveal-text">
-            <span className="text-gray-500 dark:text-gray-400 font-bold tracking-[0.2em] uppercase text-xs mb-6 block">
+            <span className="text-gray-600 dark:text-gray-400 font-bold tracking-[0.2em] uppercase text-xs mb-6 block">
               {t('about.visionLabel')}
             </span>
             <h2 className="text-6xl md:text-8xl font-black text-gray-900 dark:text-white mb-8 tracking-tighter leading-[0.95]">
@@ -124,7 +124,7 @@ const About = () => {
               <h3 className="text-6xl md:text-7xl font-black text-gray-900 dark:text-white uppercase tracking-tighter leading-none mb-6">
                 {t('about.problemsTitle1')} <br/><span className="text-red-500">{t('about.problemsTitle2')}</span>
               </h3>
-              <p className="text-gray-500 dark:text-gray-400 text-lg font-medium max-w-sm">
+              <p className="text-gray-600 dark:text-gray-400 text-lg font-medium max-w-sm">
                 {t('about.problemsDesc')}
               </p>
             </div>
@@ -149,7 +149,7 @@ const About = () => {
               <h3 className="text-6xl md:text-7xl font-black text-gray-900 dark:text-white uppercase tracking-tighter leading-none mb-6">
                 {t('about.approachTitle1')} <br/><span className="text-primary">{t('about.approachTitle2')}</span>
               </h3>
-              <p className="text-gray-500 dark:text-gray-400 text-lg font-medium max-w-sm lg:ml-auto">
+              <p className="text-gray-600 dark:text-gray-400 text-lg font-medium max-w-sm lg:ml-auto">
                 {t('about.approachDesc')}
               </p>
             </div>

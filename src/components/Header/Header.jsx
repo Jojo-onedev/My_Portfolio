@@ -69,6 +69,7 @@ const Header = () => {
             
             <button 
               onClick={toggleDarkMode}
+              aria-label="Toggle Dark Mode"
               className="p-2 rounded-full neumorph-button text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-all shadow-lg shadow-black/5"
             >
               {isDarkMode ? <SunIcon className="w-5 h-5" /> : <MoonIcon className="w-5 h-5" />}
@@ -83,6 +84,7 @@ const Header = () => {
             <div className="md:hidden">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
+                aria-label="Toggle Mobile Menu"
                 className="p-2 text-gray-900 dark:text-white"
               >
                 {isMenuOpen ? <XIcon className="w-6 h-6" /> : <MenuIcon className="w-6 h-6" />}

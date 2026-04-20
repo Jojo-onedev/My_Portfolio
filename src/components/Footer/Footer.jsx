@@ -44,6 +44,7 @@ const Footer = () => {
                       href={link.url}
                       target="_blank"
                       rel="noopener noreferrer"
+                      aria-label={link.name}
                       className="w-12 h-12 glass rounded-2xl flex items-center justify-center text-gray-500 dark:text-gray-400 hover:text-white dark:hover:text-white hover:bg-primary transition-all duration-300 shadow-lg shadow-black/5"
                     >
                       <FontAwesomeIcon icon={link.icon} className="text-xl" />
