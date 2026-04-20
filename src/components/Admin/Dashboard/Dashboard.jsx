@@ -24,6 +24,7 @@ const Dashboard = () => {
     { label: 'Uptime', value: '99.9%', change: 'Stable', color: 'text-purple-500' },
   ]);
   const [topCountries, setTopCountries] = useState([]);
+  const [referrers, setReferrers] = useState([]);
   const [healthAudit, setHealthAudit] = useState(null);
   const [isAuditing, setIsAuditing] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -39,12 +40,12 @@ const Dashboard = () => {
       // 2. Weekly Visits Chart
       const resWeekly = await turso.execute(`
         SELECT 
-          strftime('%w', created_at) as day_index,
+          strftime('%w', timestamp) as day_index,
           COUNT(*) as visits
         FROM analytics 
-        WHERE created_at >= date('now', '-7 days')
+        WHERE timestamp >= date('now', '-7 days')
         GROUP BY day_index
-        ORDER BY created_at ASC
+        ORDER BY timestamp ASC
       `);
       
       const dayNames = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
@@ -71,6 +72,15 @@ const Dashboard = () => {
         LIMIT 5
       `);
 
+      const resReferrers = await turso.execute(`
+        SELECT referrer as name, COUNT(*) as value
+        FROM analytics
+        WHERE referrer IS NOT NULL AND referrer != ''
+        GROUP BY referrer
+        ORDER BY value DESC
+        LIMIT 5
+      `);
+
       const resProjects = await turso.execute('SELECT COUNT(*) as total FROM projects');
 
       setStats([
@@ -91,6 +101,13 @@ const Dashboard = () => {
       })));
 
       setTopCountries(resGeo.rows);
+      setReferrers(resReferrers.rows.map(r => {
+        let domain = r.name;
+        try {
+          domain = new URL(r.name).hostname.replace('www.', '');
+        } catch(e) {}
+        return { name: domain, value: r.value };
+      }));
 
     } catch (err) {
       console.error('Error fetching dashboard stats:', err);
@@ -252,7 +269,7 @@ const Dashboard = () => {
         </div>
 
         {/* Page Views Chart */}
-        <div className="neumorph-card p-10 bg-gray-50 dark:bg-[#1a1a1a] lg:col-span-2">
+        <div className="neumorph-card p-10 bg-gray-50 dark:bg-[#1a1a1a]">
           <h3 className="text-lg font-black text-gray-900 dark:text-white mb-8 uppercase tracking-tighter">Pages les plus vues</h3>
           <div className="h-[300px] w-full">
             <ResponsiveContainer width="100%" height="100%">
@@ -265,6 +282,30 @@ const Dashboard = () => {
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
+          </div>
+        </div>
+
+        {/* Referrers Section */}
+        <div className="neumorph-card p-10 bg-gray-50 dark:bg-[#1a1a1a]">
+          <h3 className="text-lg font-black text-gray-900 dark:text-white mb-8 uppercase tracking-tighter">Top Référents</h3>
+          <div className="space-y-6">
+            {referrers.length > 0 ? referrers.map((c, i) => (
+              <div key={i} className="space-y-2">
+                <div className="flex justify-between text-xs font-bold uppercase tracking-widest">
+                  <span className="text-gray-900 dark:text-white">{c.name}</span>
+                  <span className="text-purple-500">{c.value} clics</span>
+                </div>
+                <div className="h-1.5 w-full bg-gray-200 dark:bg-white/5 rounded-full overflow-hidden">
+                  <motion.div 
+                    initial={{ width: 0 }}
+                    animate={{ width: `${Math.min(100, (c.value / (parseInt(stats[0].value.replace(/\D/g,'')) || 1)) * 100)}%` }}
+                    className="h-full bg-purple-500"
+                  />
+                </div>
+              </div>
+            )) : (
+              <p className="text-center text-gray-500 py-12 text-xs uppercase tracking-widest font-bold">Trafic direct uniquement</p>
+            )}
           </div>
         </div>
       </div>
