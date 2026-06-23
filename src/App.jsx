@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next';
 import CustomCursor from './components/Cursor/CustomCursor';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
+import turso from './lib/turso';
 
 // Lazy Loaded Routes (Code Splitting)
 const News = React.lazy(() => import('./components/News/News'));
@@ -75,16 +76,35 @@ function App() {
   }, [location.pathname, isLoading]);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 3000);
+    // Durée minimale d'affichage du loader pour les animations d'entrée (1s)
+    const MIN_DURATION = 1000;
+    // Délai maximum : si Turso ne répond pas, on affiche quand même le site
+    const MAX_DURATION = 4000;
+    const startTime = Date.now();
 
-    return () => clearTimeout(timer);
+    const finish = () => {
+      // Garantit que le loader reste affiché au moins MIN_DURATION ms
+      const elapsed = Date.now() - startTime;
+      const remaining = Math.max(0, MIN_DURATION - elapsed);
+      setTimeout(() => setIsLoading(false), remaining);
+    };
+
+    // Fallback de sécurité : si tout prend trop longtemps, on ne bloque pas l'utilisateur
+    const safeguard = setTimeout(() => setIsLoading(false), MAX_DURATION);
+
+    // Chargement conditionnel : attend les données initiales de Turso
+    turso.execute('SELECT value FROM settings WHERE key = "site_title"')
+      .then(finish)
+      .catch(finish) // En cas d'erreur DB, on continue quand même
+      .finally(() => clearTimeout(safeguard));
+
+    return () => clearTimeout(safeguard);
   }, []);
 
   if (isLoading) {
     return <Loader />;
   }
+
 
   return (
     <div className="min-h-screen bg-[#f1f3f6] dark:bg-[#121212] transition-colors duration-500">

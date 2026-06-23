@@ -39,7 +39,7 @@ const AdminLogin = () => {
     // 3. Request Throttling (Artificial Delay)
     await new Promise(resolve => setTimeout(resolve, 1500));
 
-    if (login(formData.password)) {
+    if (await login(formData.password)) {
       navigate('/admin/dashboard');
     } else {
       const newAttempts = attempts + 1;
