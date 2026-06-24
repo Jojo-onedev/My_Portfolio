@@ -1,130 +1,21 @@
 # Jonathan Bationo - Portfolio
 
-Développeur web full-stack spécialisé dans la création d'expériences numériques immersives, alliant minimalisme, design moderne et performance. Portfolio professionnel présentant projets, compétences et parcours avec tableau de bord administrateur sécurisé pour la gestion de contenu dynamique.
+> Site web professionnel de Jonathan Bationo, développeur web full-stack. Site vitrine présentant projets, compétences et témoignages, Support FR/EN, mode sombre, analytics custom via Turso.
 
-## Métadonnées
+Stack technique : React 18, Vite 6, Tailwind CSS 3.4, Framer Motion, GSAP, React Router 6, i18next, Turso (LibSQL), EmailJS, Vercel Analytics, Google Analytics. Déploiement sur Vercel avec headers de sécurité (CSP, HSTS, COOP, COEP).
 
-- **Auteur** : Jonathan Bationo
-- **Langues** : Français (par défaut), English
-- **Sujet** : Portfolio développeur web full-stack, React, UX/UI design
-- **Type** : Site vitrine professionnel avec panneau d'administration
-- **Technologies** : React 18, Vite 6, Tailwind CSS 3.4, Framer Motion, GSAP, React Router DOM 6, i18next, Turso (LibSQL), EmailJS, Vercel Analytics, Google Analytics
 
-## Navigation principale
+## Pages principales
 
-- `/` — Accueil avec hero, à propos, projets, compétences, témoignages, contact
-- `/news` — Actualités et articles du secteur tech/design
-- `/contact` — Formulaire de contact direct (EmailJS)
+- [Accueil](https://bationojonathan.me/): Hero, à propos, projets, compétences, témoignages, contact
+- [Actualités](https://bationojonathan.me/news): Articles et ressources tech/design avec système de partage
+- [Contact](https://bationojonathan.me/contact): Formulaire EmailJS avec informations email et WhatsApp
+- [404](https://bationojonathan.me/404): Page d'erreur avec animation Lottie
 
-## Sections publiques
+## Optional
 
-### Hero
-Section d'introduction avec titre, sous-titre, appel à l'action et photographie principale. Affichage dynamique des titres configurable via la base de données.
-
-### About / À propos
-Présentation personnelle du développeur. Affichage des valeurs, de l'approche et des expertises principales. Contenu géré dynamiquement via la base de données.
-
-### Projects / Projets
-Grille de projets réalisés avec filtres par catégorie (web, dev, UI). Chaque projet affiche : image, titre, description, catégorie, lien externe et indicateurs de performance simulés (conversion, temps de chargement, SEO score).
-
-### Skills / Compétences
-Stack technique présentée sous forme visuelle avec catégories : frontend, backend, outils et méthodologies.
-
-### Testimonials / Témoignages
-Cartes de retours clients avec citation, nom, rôle et avatar.
-
-### Contact
-Informations de contact : email, WhatsApp, liens sociaux. Formulaire de message sécurisé via EmailJS avec anti-spam (honeypot, rate limiting).
-
-### News / Actualités
-Articles et ressources du secteur tech avec système de partage.
-
-## Fonctionnalités techniques
-
-- **Internationalisation** : Support natif FR/EN avec détection automatique de la langue du navigateur
-- **Mode sombre** : Bascule light/dark avec persistance locale et transition fluide
-- **Animations** : Scroll animations (GSAP ScrollTrigger), transitions de page (Framer Motion), loader Lottie
-- **SEO** : Meta tags dynamiques (react-helmet-async), sitemap.xml, robots.txt, données structurées JSON-LD
-- **Analytics** : Tracking multi-source (Vercel Analytics, Google Analytics, analytics custom avec géolocalisation via Turso)
-- **Performance** : Code-splitting (React.lazy), optimisation des assets, scores Lighthouse 100/100 revendiqués
-- **Sécurité** : Headers de sécurité (CSP, HSTS, COOP, COEP), protection XSS, anti-clickjacking, anti-bot (honeypot + rate limiting), isolation d'origine
-
-## Contact et réseaux
-
-- **Email** : bationojonathan5@gmail.com
-- **WhatsApp** : +226 64 74 02 66
-- **LinkedIn** : https://www.linkedin.com/in/jonathan-bationo-7908b3348
-- **GitHub** : https://github.com/Jojo-onedev
-- **Site web** : https://bationojonathan.me
-
-## Stack détaillée
-
-**Frontend** : React.js (Vite), React Router DOM 6, Tailwind CSS 3.4, Framer Motion 10, GSAP 3, FontAwesome 6, Heroicons, Lottie
-
-**État et data** : React Query (TanStack), Context API (DarkMode, AdminAuth), i18next + react-i18next
-
-**Backend/DB** : Turso (LibSQL) via @libsql/client, EmailJS
-
-**Monitoring** : Vercel Analytics, Vercel Speed Insights, Google Analytics (gtag.js), analytics custom avec géolocalisation ipapi.co
-
-**Déploiement** :Vercel (vercel.json) configurés. Build output dans `/dist`.
-
-## Structure du dépôt
-
-```
-My_Portfolio/
-├── public/                    # Assets statiques, images, SEO
-│   ├── images/               # 10 images projets/avatars (PNG, JPEG)
-│   ├── animations/404.json  # Animation Lottie page 404
-│   ├── projects.json        # Données projets fallback
-│   ├── llms.txt             # Navigation pour agents IA (ce fichier)
-│   ├── robots.txt, sitemap.xml, _redirects
-│   ├── logo.png, myresume.pdf
-├── src/
-│   ├── main.jsx             # Point d'entrée avec Providers
-│   ├── App.jsx              # Routes et layout principal
-│   ├── components/          # 20+ composants React
-│   │   ├── Header/          # Navigation fixe glassmorph
-│   │   ├── Hero/            # Section hero avec image principale
-│   │   ├── About/           # À propos avec chargement Turso
-│   │   ├── Projects/        # Grille projets avec filtres
-│   │   ├── Skills/          # Stack technique
-│   │   ├── Testimonials/    # Témoignages clients
-│   │   ├── Contact/         # Formulaire EmailJS
-│   │   ├── News/            # Page actualités
-│   │   ├── Footer/          # Pied de page
-│   │   ├── Cursor/          # Curseur custom
-│   │   ├── Loader/          # Animation de chargement
-│   │   ├── SEO/             # Meta tags dynamiques
-│   │   ├── LanguageSwitcher/
-│   │   └── Admin/           # Panneau administrateur
-│   │       ├── Login/       # Auth avec anti-bot
-│   │       ├── Dashboard/   # Métriques Recharts
-│   │       └── CRUD/        # Gestion projets, skills, témoignages, settings
-│   ├── context/             # DarkModeContext, AdminAuthContext
-│   ├── locales/             # Traductions FR et EN
-│   ├── utils/               # Analytics et health check
-│   └── lib/                 # Client Turso
-├── scripts/                 # Seeds et migrations DB (SQL)
-├── schema.sql               # Schéma de base de données
-├── tailwind.config.js       # Configuration Tailwind custom
-├── vite.config.js           # Configuration Vite
-├── netlify.toml             # Configuration déploiement Netlify + headers sécurité
-├── vercel.json              # Configuration déploiement Vercel
-└── package.json
-```
-
-## Base de données (Turso / LibSQL)
-
-Tables principales :
-- `projects` — Réalisations avec titre, description, image, lien, catégorie, données de performance
-- `testimonials` — Témoignages avec nom, rôle, citation, avatar
-- `analytics` — Visites avec page_path, visitor_id, user_agent, referrer, géolocalisation (country, city)
-- `settings` — Configuration clé/valeur (site_title, hero_title, hero_subtitle, about_title, about_description, contact_email)
-
-## Informations légales et sécurité
-
-- Aucune donnée sensible commitée dans le dépôt
-- Variables d'environnement pour les clés API (EmailJS, Turso, Google Analytics)
-- Authentification admin par hash SHA-256 (jamais de mot de passe en clair)
-- Headers de sécurité : X-Frame-Options, X-XSS-Protection, X-Content-Type-Options, Referrer-Policy, CSP, HSTS, COOP, COEP
+- [GitHub](https://github.com/Jojo-onedev): Dépôt du projet
+- [LinkedIn](https://www.linkedin.com/in/jonathan-bationo-7908b3348): Profil professionnel
+- [Resume PDF](https://bationojonathan.me/myresume.pdf): CV téléchargeable
+- [Robots](https://bationojonathan.me/robots.txt): Règles pour crawlers
+- [Sitemap](https://bationojonathan.me/sitemap.xml): Plan du site XML
