@@ -144,15 +144,18 @@ const News = () => {
                 {article.cover_image && (
                   <div className="relative h-48 overflow-hidden">
                     <img 
+                      width="400"
+                      height="192"
                       src={article.cover_image} 
                       alt={article.title}
                       className="w-full h-full object-cover grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-500 text-gray-400"
                     />
                     <div className="absolute top-4 right-4">
-                      <button 
-                        onClick={() => handleShare(article.url)}
-                        className="w-10 h-10 glass border-gray-100 dark:border-white/10 rounded-xl flex items-center justify-center text-gray-900 dark:text-white hover:bg-primary hover:text-white transition-colors shadow-2xl"
-                      >
+                       <button 
+                         aria-label="Partager l'article"
+                         onClick={() => handleShare(article.url)}
+                         className="w-10 h-10 glass border-gray-100 dark:border-white/10 rounded-xl flex items-center justify-center text-gray-900 dark:text-white hover:bg-primary hover:text-white transition-colors shadow-2xl"
+                       >
                         <ShareIcon className="h-5 w-5" />
                       </button>
                     </div>

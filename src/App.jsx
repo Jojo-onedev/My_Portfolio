@@ -17,9 +17,7 @@ import { useTranslation } from 'react-i18next';
 import CustomCursor from './components/Cursor/CustomCursor';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
-import turso from './lib/turso';
 
-// Lazy Loaded Routes (Code Splitting)
 const News = React.lazy(() => import('./components/News/News'));
 const NotFound = React.lazy(() => import('./components/NotFound/NotFound'));
 const AdminLogin = React.lazy(() => import('./components/Admin/Login/AdminLogin'));
@@ -42,69 +40,43 @@ const ScrollToTop = () => {
 import { logVisit } from './utils/analytics';
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isReady, setIsReady] = useState(false);
   const location = useLocation();
   const { t } = useTranslation();
 
   useEffect(() => {
-    // Log visit on route change (Custom Dashboard)
-    if (!isLoading) {
-      logVisit(location.pathname);
-    }
-
-    // Google Analytics Integration
-    const gaId = import.meta.env.VITE_GA_MEASUREMENT_ID;
-    if (gaId && !isLoading) {
-      // 1. Inject gtag.js script
-      if (!window.gtag) {
-        const script = document.createElement('script');
-        script.async = true;
-        script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
-        document.head.appendChild(script);
-
-        window.dataLayer = window.dataLayer || [];
-        window.gtag = function() { window.dataLayer.push(arguments); };
-        window.gtag('js', new Date());
-        window.gtag('config', gaId);
-      }
-      
-      // 2. Log Page View to GA
-      window.gtag('event', 'page_view', {
-        page_path: location.pathname,
-      });
-    }
-  }, [location.pathname, isLoading]);
-
-  useEffect(() => {
-    // Durée minimale d'affichage du loader pour les animations d'entrée (1s)
-    const MIN_DURATION = 1000;
-    // Délai maximum : si Turso ne répond pas, on affiche quand même le site
-    const MAX_DURATION = 4000;
-    const startTime = Date.now();
-
-    const finish = () => {
-      // Garantit que le loader reste affiché au moins MIN_DURATION ms
-      const elapsed = Date.now() - startTime;
-      const remaining = Math.max(0, MIN_DURATION - elapsed);
-      setTimeout(() => setIsLoading(false), remaining);
-    };
-
-    // Fallback de sécurité : si tout prend trop longtemps, on ne bloque pas l'utilisateur
-    const safeguard = setTimeout(() => setIsLoading(false), MAX_DURATION);
-
-    // Chargement conditionnel : attend les données initiales de Turso
-    turso.execute('SELECT value FROM settings WHERE key = "site_title"')
-      .then(finish)
-      .catch(finish) // En cas d'erreur DB, on continue quand même
-      .finally(() => clearTimeout(safeguard));
-
-    return () => clearTimeout(safeguard);
+    const timer = setTimeout(() => setIsReady(true), 400);
+    return () => clearTimeout(timer);
   }, []);
 
-  if (isLoading) {
-    return <Loader />;
-  }
+  useEffect(() => {
+    if (!isReady) return;
+    logVisit(location.pathname);
 
+    const gaId = import.meta.env.VITE_GA_MEASUREMENT_ID;
+    if (gaId && !window.gtag) {
+      const script = document.createElement('script');
+      script.async = true;
+      script.src = `https://www.googletagmanager.com/gtag/js?id=${gaId}`;
+      document.head.appendChild(script);
+      window.dataLayer = window.dataLayer || [];
+      window.gtag = function() { window.dataLayer.push(arguments); };
+      window.gtag('js', new Date());
+      window.gtag('config', gaId);
+    }
+
+    if (window.gtag) {
+      window.gtag('event', 'page_view', { page_path: location.pathname });
+    }
+  }, [location.pathname, isReady]);
+
+  if (!isReady) {
+    return (
+      <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-[#121212]">
+        <div className="w-3 h-3 bg-primary rounded-full animate-pulse" />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#f1f3f6] dark:bg-[#121212] transition-colors duration-500">
@@ -116,7 +88,6 @@ function App() {
       <ScrollToTop />
       <Suspense fallback={<Loader />}>
         <Routes>
-          {/* Public Routes */}
           <Route path="/" element={
             <>
               <Header />
@@ -131,7 +102,6 @@ function App() {
           } />
           <Route path="/news" element={<><Header /><News /><Footer /></>} />
 
-          {/* Admin Routes */}
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={<ProtectedRoute />}>
             <Route element={<AdminLayout />}>
@@ -144,7 +114,6 @@ function App() {
             </Route>
           </Route>
 
-          {/* Fallback */}
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>

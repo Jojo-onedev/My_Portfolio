@@ -63,6 +63,8 @@ const Testimonials = () => {
                     <img
                       src={t.image}
                       alt={t.name}
+                      width="56"
+                      height="56"
                       className="w-full h-full rounded-xl object-cover grayscale group-hover:grayscale-0 transition-all"
                     />
                   </div>

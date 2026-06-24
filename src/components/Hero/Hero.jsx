@@ -119,7 +119,7 @@ const Hero = () => {
 
             <p
               ref={textRef}
-              className="text-xl text-gray-400 dark:text-gray-400 max-w-xl mb-10 leading-relaxed font-light"
+              className="text-xl text-gray-500 dark:text-gray-400 max-w-xl mb-10 leading-relaxed font-light"
             >
               {isEnglish ? t('hero.subtitle') : ((settings && settings.hero_subtitle) || t('hero.subtitle'))}
             </p>
@@ -159,6 +159,8 @@ const Hero = () => {
             <div className="relative z-10 w-full max-w-[450px] mx-auto h-[450px] sm:h-[500px] lg:h-[600px] rounded-t-[15rem] rounded-b-[4rem] overflow-hidden bg-gray-200 dark:bg-[#1a1a1a] shadow-2xl shadow-black/10 group cursor-pointer border border-white/10">
               {/* Image with Grayscale hover effect */}
               <img 
+                width="450"
+                height="450"
                 className="w-full h-full object-cover object-center transform scale-105 group-hover:scale-100 grayscale hover:grayscale-0 transition-all duration-700 ease-out" 
                 src="/images/myimage.jpg" 
                 alt="Jonathan Bationo" 
