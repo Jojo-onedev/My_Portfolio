@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAdminAuth } from '../../../context/AdminAuthContext';
 import { motion } from 'framer-motion';
@@ -15,6 +15,15 @@ const AdminLogin = () => {
   
   const { login } = useAdminAuth();
   const navigate = useNavigate();
+  
+  const [isLocked, setIsLocked] = useState(false);
+
+  useEffect(() => {
+    const checkLockout = () => setIsLocked(Date.now() < lockoutUntil);
+    checkLockout();
+    const interval = setInterval(checkLockout, 1000);
+    return () => clearInterval(interval);
+  }, [lockoutUntil]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -89,7 +98,7 @@ const AdminLogin = () => {
               onChange={(e) => setFormData({...formData, password: e.target.value})}
               className="w-full px-6 py-4 rounded-2xl bg-[#f1f3f6] dark:bg-[#121212] border border-gray-100 dark:border-white/5 focus:border-primary/50 outline-none transition-all text-gray-900 dark:text-white placeholder-gray-400"
               placeholder="••••••••"
-              disabled={isLoading || Date.now() < lockoutUntil}
+disabled={isLoading || isLocked}
               required
             />
           </div>
@@ -106,7 +115,7 @@ const AdminLogin = () => {
 
           <button 
             type="submit"
-            disabled={isLoading || Date.now() < lockoutUntil}
+            disabled={isLoading || isLocked}
             className="w-full py-5 rounded-2xl bg-primary text-white font-black uppercase tracking-widest text-sm shadow-2xl shadow-primary/30 hover:scale-[1.02] transition-all active:scale-95 disabled:opacity-50 disabled:grayscale disabled:cursor-not-allowed"
           >
             {isLoading ? 'Vérification...' : 'S\'authentifier'}

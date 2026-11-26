@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import turso from '../../../lib/turso';
-import { motion } from 'framer-motion';
 import { SaveIcon } from '@heroicons/react/outline';
 
 const SettingsManager = () => {
   const [settings, setSettings] = useState({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const isMounted = useRef(true);
 
   const fetchSettings = async () => {
     try {
@@ -15,27 +15,29 @@ const SettingsManager = () => {
       res.rows.forEach(row => {
         settingsMap[row.key] = row.value;
       });
-      setSettings(settingsMap);
+      if (isMounted.current) setSettings(settingsMap);
     } catch (err) {
       console.error(err);
     } finally {
-      setLoading(false);
+      if (isMounted.current) setLoading(false);
     }
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchSettings();
+    return () => { isMounted.current = false; };
   }, []);
 
-  const handleUpdate = (key, value) => {
-    setSettings(prev => ({ ...prev, [key]: value }));
+  const handleUpdate = (_key, value) => {
+    setSettings(prev => ({ ...prev, [_key]: value }));
   };
 
   const handleSave = async (e) => {
     e.preventDefault();
     setSaving(true);
     try {
-      for (const [key, value] of Object.entries(settings)) {
+      for (const [_key, value] of Object.entries(settings)) {
         await turso.execute({
           sql: 'INSERT INTO settings (key, value) ON CONFLICT(key) DO UPDATE SET value = ?',
           args: [value]

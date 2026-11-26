@@ -15,13 +15,13 @@ export const logVisit = async (path) => {
         const data = await geoRes.json();
         geo = { country: data.country_name || 'Inconnu', city: data.city || 'Inconnu' };
       }
-    } catch (e) { /* geolocation silencieuse */ }
+    } catch { /* geolocation silencieuse */ }
 
     try {
       await turso.execute({
         sql: 'INSERT INTO analytics (page_path, visitor_id, user_agent, referrer, country, city) VALUES (?, ?, ?, ?, ?, ?)',
         args: [path, visitorId, navigator.userAgent, document.referrer, geo.country, geo.city]
       });
-    } catch (dbErr) { /* analytics silencieuse */ }
-  } catch (err) { /* noop */ }
+    } catch { /* analytics silencieuse */ }
+  } catch { /* noop */ }
 };

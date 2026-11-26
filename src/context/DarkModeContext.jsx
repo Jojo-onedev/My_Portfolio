@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const DarkModeContext = createContext();
 
 export const DarkModeProvider = ({ children }) => {
@@ -14,7 +15,7 @@ export const DarkModeProvider = ({ children }) => {
   // Appliquer le mode initial au chargement
   useEffect(() => {
     document.documentElement.classList.toggle('dark', isDarkMode);
-  }, []);
+  }, [isDarkMode]);
 
   return (
     <DarkModeContext.Provider value={{ isDarkMode, toggleDarkMode }}>

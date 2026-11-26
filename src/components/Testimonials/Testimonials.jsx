@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 
 const Testimonials = () => {
   const [testimonials, setTestimonials] = useState([]);
-  const [loading, setLoading] = useState(true);
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -15,8 +14,6 @@ const Testimonials = () => {
         setTestimonials(res.rows);
       } catch (err) {
         console.error("Testimonials fetch error:", err);
-      } finally {
-        setLoading(false);
       }
     };
     fetchTestimonials();

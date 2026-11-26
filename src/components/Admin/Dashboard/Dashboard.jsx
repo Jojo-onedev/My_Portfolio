@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import turso from '../../../lib/turso';
 import { 
   AreaChart, 
@@ -27,10 +27,9 @@ const Dashboard = () => {
   const [referrers, setReferrers] = useState([]);
   const [healthAudit, setHealthAudit] = useState(null);
   const [isAuditing, setIsAuditing] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const isMounted = useRef(true);
 
   const fetchStats = async () => {
-    setLoading(true);
     try {
       // 1. Total Visits & Unique Visitors
       const resTotal = await turso.execute('SELECT COUNT(*) as total, COUNT(DISTINCT visitor_id) as unique_v FROM analytics');
@@ -83,36 +82,36 @@ const Dashboard = () => {
 
       const resProjects = await turso.execute('SELECT COUNT(*) as total FROM projects');
 
-      setStats([
-        { label: 'Visites Totales', value: totalVisits.toLocaleString(), change: '+100%', color: 'text-blue-500' },
-        { label: 'Visiteurs Uniques', value: uniqueVisitors.toLocaleString(), change: '+100%', color: 'text-green-500' },
-        { label: 'Projets Actifs', value: resProjects.rows[0].total.toString(), change: 'Live', color: 'text-primary' },
-        { label: 'Uptime', value: '99.9%', change: 'Stable', color: 'text-purple-500' },
-      ]);
-      
-      setVisitData(chartData.length > 0 ? chartData : [
-        { name: 'Lun', visits: 0 }, { name: 'Mar', visits: 0 }, { name: 'Mer', visits: 0 }, 
-        { name: 'Jeu', visits: 0 }, { name: 'Ven', visits: 0 }, { name: 'Sam', visits: 0 }, { name: 'Dim', visits: 0 }
-      ]);
-      
-      setPageViews(resPages.rows.map(row => ({
-        name: row.name === '/' ? 'Accueil' : row.name.replace('/', ''),
-        value: row.value
-      })));
+      if (isMounted.current) {
+        setStats([
+          { label: 'Visites Totales', value: totalVisits.toLocaleString(), change: '+100%', color: 'text-blue-500' },
+          { label: 'Visiteurs Uniques', value: uniqueVisitors.toLocaleString(), change: '+100%', color: 'text-green-500' },
+          { label: 'Projets Actifs', value: resProjects.rows[0].total.toString(), change: 'Live', color: 'text-primary' },
+          { label: 'Uptime', value: '99.9%', change: 'Stable', color: 'text-purple-500' },
+        ]);
+        
+        setVisitData(chartData.length > 0 ? chartData : [
+          { name: 'Lun', visits: 0 }, { name: 'Mar', visits: 0 }, { name: 'Mer', visits: 0 }, 
+          { name: 'Jeu', visits: 0 }, { name: 'Ven', visits: 0 }, { name: 'Sam', visits: 0 }, { name: 'Dim', visits: 0 }
+        ]);
+        
+        setPageViews(resPages.rows.map(row => ({
+          name: row.name === '/' ? 'Accueil' : row.name.replace('/', ''),
+          value: row.value
+        })));
 
-      setTopCountries(resGeo.rows);
-      setReferrers(resReferrers.rows.map(r => {
-        let domain = r.name;
-        try {
-          domain = new URL(r.name).hostname.replace('www.', '');
-        } catch(e) {}
-        return { name: domain, value: r.value };
-      }));
+        setTopCountries(resGeo.rows);
+        setReferrers(resReferrers.rows.map(r => {
+          let domain = r.name;
+          try {
+            domain = new URL(r.name).hostname.replace('www.', '');
+          } catch { /* ignore */ }
+          return { name: domain, value: r.value };
+        }));
+      }
 
     } catch (err) {
       console.error('Error fetching dashboard stats:', err);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -126,7 +125,9 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchStats();
+    return () => { isMounted.current = false; };
   }, []);
 
   return (

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 
 const AdminAuthContext = createContext();
 
@@ -12,13 +12,15 @@ async function sha256(message) {
 export const AdminAuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
+  const isMounted = useRef(true);
 
   useEffect(() => {
     const adminSession = localStorage.getItem('admin_token');
     if (adminSession && adminSession.startsWith('sk_admin_')) {
-      setIsAuthenticated(true);
+      if (isMounted.current) setIsAuthenticated(true);
     }
-    setLoading(false);
+    if (isMounted.current) setLoading(false);
+    return () => { isMounted.current = false; };
   }, []);
 
   const login = async (password) => {
@@ -46,4 +48,5 @@ export const AdminAuthProvider = ({ children }) => {
   );
 };
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useAdminAuth = () => useContext(AdminAuthContext);

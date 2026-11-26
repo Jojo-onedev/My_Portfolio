@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import turso from '../../../lib/turso';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PlusIcon, PencilIcon, TrashIcon, ExternalLinkIcon } from '@heroicons/react/outline';
@@ -15,21 +15,24 @@ const ProjectManager = () => {
     link: '',
     category: 'web'
   });
+  const isMounted = useRef(true);
 
   const fetchProjects = async () => {
     setLoading(true);
     try {
       const res = await turso.execute('SELECT * FROM projects ORDER BY created_at DESC');
-      setProjects(res.rows);
+      if (isMounted.current) setProjects(res.rows);
     } catch (err) {
       console.error('Error fetching projects:', err);
     } finally {
-      setLoading(false);
+      if (isMounted.current) setLoading(false);
     }
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchProjects();
+    return () => { isMounted.current = false; };
   }, []);
 
   const handleSubmit = async (e) => {

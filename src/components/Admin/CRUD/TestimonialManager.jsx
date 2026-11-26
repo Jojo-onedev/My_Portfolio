@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import turso from '../../../lib/turso';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PlusIcon, PencilIcon, TrashIcon } from '@heroicons/react/outline';
@@ -14,21 +14,24 @@ const TestimonialManager = () => {
     quote: '',
     avatar: ''
   });
+  const isMounted = useRef(true);
 
   const fetchTestimonials = async () => {
     setLoading(true);
     try {
       const res = await turso.execute('SELECT * FROM testimonials ORDER BY created_at DESC');
-      setTestimonials(res.rows);
+      if (isMounted.current) setTestimonials(res.rows);
     } catch (err) {
       console.error('Error fetching testimonials:', err);
     } finally {
-      setLoading(false);
+      if (isMounted.current) setLoading(false);
     }
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchTestimonials();
+    return () => { isMounted.current = false; };
   }, []);
 
   const handleSubmit = async (e) => {

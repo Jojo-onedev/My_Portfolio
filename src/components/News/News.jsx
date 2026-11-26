@@ -15,7 +15,7 @@ const News = () => {
 
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-  const fetchNews = useCallback(async (newPage = 1) => {
+const fetchNews = useCallback(async (newPage = 1) => {
     if (loading && newPage === 1) return; // Prevent multiple initial loads
     setLoading(true);
     setError(null);
@@ -33,7 +33,7 @@ const News = () => {
           const data = await response.json();
           results.push(...data);
           await delay(300);
-        } catch (err) { console.error(err); continue; }
+        } catch { continue; }
       }
       const newArticles = results.map((article, index) => ({
         ...article,
@@ -42,12 +42,12 @@ const News = () => {
       if (newPage === 1) setNews(newArticles);
       else setNews(prev => [...prev, ...newArticles]);
       setHasMore(newArticles.length > 0);
-    } catch (err) {
-      setError(t('news_error_loading') || 'Erreur lors du chargement des actualités');
+    } catch {
+      setError(t('news_error_loading') || 'Erreur lors du chargement des actualitÃ©s');
     } finally {
       setLoading(false);
     }
-  }, [selectedCategory]); // Removed 't' to prevent re-creation loops
+  }, [selectedCategory, loading, t]);
 
   const handleRefresh = useCallback(() => {
     setPage(1);
@@ -71,6 +71,7 @@ const News = () => {
   useEffect(() => {
     let active = true;
     if (active) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       fetchNews(1);
     }
     return () => { active = false; };

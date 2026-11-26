@@ -9,8 +9,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Contact = () => {
   const sectionRef = useRef(null);
-  const formRef = useRef(null);
-  const infoRef = useRef(null);
 
   const [formData, setFormData] = useState({
     name: '',

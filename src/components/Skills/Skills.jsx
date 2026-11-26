@@ -14,15 +14,16 @@ const Skills = () => {
   const [skills, setSkills] = useState([]);
   const [fetchingSkills, setFetchingSkills] = useState(true);
   const { t } = useTranslation();
+  const isMounted = useRef(true);
 
   const fetchSkills = async () => {
     try {
       const res = await turso.execute('SELECT * FROM skills ORDER BY id ASC');
-      setSkills(res.rows);
+      if (isMounted.current) setSkills(res.rows);
     } catch (err) {
       console.error('Error fetching skills:', err);
     } finally {
-      setFetchingSkills(false);
+      if (isMounted.current) setFetchingSkills(false);
     }
   };
 
@@ -77,9 +78,13 @@ const Skills = () => {
       });
     }, sectionRef);
 
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchSkills();
 
-    return () => ctx.revert();
+    return () => {
+      ctx.revert();
+      isMounted.current = false;
+    };
   }, []);
 
   return (

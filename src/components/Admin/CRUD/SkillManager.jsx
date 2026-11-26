@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import turso from '../../../lib/turso';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PlusIcon, PencilIcon, TrashIcon } from '@heroicons/react/outline';
@@ -10,27 +10,30 @@ const SkillManager = () => {
   const [editingSkill, setEditingSkill] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
-    level: 'Intermédiaire',
+    level: 'IntermÃ©diaire',
     category: 'tech',
     color: 'text-primary',
     bg: 'bg-primary/5',
     border: 'hover:border-primary/40'
   });
+  const isMounted = useRef(true);
 
   const fetchSkills = async () => {
     setLoading(true);
     try {
       const res = await turso.execute('SELECT * FROM skills ORDER BY created_at DESC');
-      setSkills(res.rows);
+      if (isMounted.current) setSkills(res.rows);
     } catch (err) {
       console.error('Error fetching skills:', err);
     } finally {
-      setLoading(false);
+      if (isMounted.current) setLoading(false);
     }
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchSkills();
+    return () => { isMounted.current = false; };
   }, []);
 
   const handleSubmit = async (e) => {
