@@ -17,6 +17,7 @@ import { useTranslation } from 'react-i18next';
 import CustomCursor from './components/Cursor/CustomCursor';
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
+import GoogleAnalytics from './components/Analytics/GoogleAnalytics';
 
 const News = React.lazy(() => import('./components/News/News'));
 const NotFound = React.lazy(() => import('./components/NotFound/NotFound'));
@@ -119,6 +120,7 @@ function App() {
       </Suspense>
       <Analytics />
       <SpeedInsights />
+      <GoogleAnalytics />
     </div>
   );
 }
