@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import turso from '../../lib/turso';
 import { useTranslation } from 'react-i18next';
 
 const Testimonials = () => {
@@ -10,8 +9,10 @@ const Testimonials = () => {
   useEffect(() => {
     const fetchTestimonials = async () => {
       try {
-        const res = await turso.execute('SELECT * FROM testimonials ORDER BY created_at DESC');
-        setTestimonials(res.rows);
+        const res = await fetch('/api/testimonials');
+        if (!res.ok) throw new Error('Failed to fetch');
+        const data = await res.json();
+        setTestimonials(data.testimonials || []);
       } catch (err) {
         console.error("Testimonials fetch error:", err);
       }

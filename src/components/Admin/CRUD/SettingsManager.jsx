@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import turso from '../../../lib/turso';
 import { SaveIcon } from '@heroicons/react/outline';
 
 const SettingsManager = () => {
@@ -10,12 +9,10 @@ const SettingsManager = () => {
 
   const fetchSettings = async () => {
     try {
-      const res = await turso.execute('SELECT * FROM settings');
-      const settingsMap = {};
-      res.rows.forEach(row => {
-        settingsMap[row.key] = row.value;
-      });
-      if (isMounted.current) setSettings(settingsMap);
+      const res = await fetch('/api/admin/settings');
+      if (!res.ok) throw new Error('Failed to fetch');
+      const data = await res.json();
+      if (isMounted.current) setSettings(data.settings || {});
     } catch (err) {
       console.error(err);
     } finally {
@@ -37,12 +34,12 @@ const SettingsManager = () => {
     e.preventDefault();
     setSaving(true);
     try {
-      for (const [_key, value] of Object.entries(settings)) {
-        await turso.execute({
-          sql: 'INSERT INTO settings (key, value) ON CONFLICT(key) DO UPDATE SET value = ?',
-          args: [value]
-        });
-      }
+      const res = await fetch('/api/admin/settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ settings })
+      });
+      if (!res.ok) throw new Error('Failed to save');
       alert('Paramètres enregistrés avec succès !');
     } catch (err) {
       console.error(err);

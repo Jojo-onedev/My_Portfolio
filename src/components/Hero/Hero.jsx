@@ -3,7 +3,6 @@ import { motion } from 'framer-motion';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { TextPlugin } from 'gsap/TextPlugin';
-import turso from '../../lib/turso';
 import SEO from '../SEO/SEO';
 import { useTranslation } from 'react-i18next';
 
@@ -22,12 +21,10 @@ const Hero = () => {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const res = await turso.execute('SELECT * FROM settings');
-        const settingsMap = {};
-        res.rows.forEach(row => {
-          settingsMap[row.key] = row.value;
-        });
-        setSettings(settingsMap);
+        const res = await fetch('/api/hero');
+        if (!res.ok) throw new Error('Failed to fetch');
+        const data = await res.json();
+        setSettings(data.settings || {});
       } catch (err) {
         console.error("Hero settings fetch error:", err);
       }

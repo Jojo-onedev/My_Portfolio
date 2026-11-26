@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import turso from '../../../lib/turso';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PlusIcon, PencilIcon, TrashIcon, ExternalLinkIcon } from '@heroicons/react/outline';
 
@@ -20,8 +19,10 @@ const ProjectManager = () => {
   const fetchProjects = async () => {
     setLoading(true);
     try {
-      const res = await turso.execute('SELECT * FROM projects ORDER BY created_at DESC');
-      if (isMounted.current) setProjects(res.rows);
+      const res = await fetch('/api/admin/projects');
+      if (!res.ok) throw new Error('Failed to fetch');
+      const data = await res.json();
+      if (isMounted.current) setProjects(data.projects || []);
     } catch (err) {
       console.error('Error fetching projects:', err);
     } finally {
@@ -39,15 +40,19 @@ const ProjectManager = () => {
     e.preventDefault();
     try {
       if (editingProject) {
-        await turso.execute({
-          sql: 'UPDATE projects SET title = ?, description = ?, image = ?, link = ?, category = ? WHERE id = ?',
-          args: [formData.title, formData.description, formData.image, formData.link, formData.category, editingProject.id]
+        const res = await fetch(`/api/admin/projects?id=${editingProject.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
         });
+        if (!res.ok) throw new Error('Failed to update');
       } else {
-        await turso.execute({
-          sql: 'INSERT INTO projects (title, description, image, link, category) VALUES (?, ?, ?, ?, ?)',
-          args: [formData.title, formData.description, formData.image, formData.link, formData.category]
+        const res = await fetch('/api/admin/projects', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
         });
+        if (!res.ok) throw new Error('Failed to create');
       }
       setIsModalOpen(false);
       setEditingProject(null);
@@ -61,10 +66,8 @@ const ProjectManager = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Êtes-vous sûr de vouloir supprimer ce projet ?')) {
       try {
-        await turso.execute({
-          sql: 'DELETE FROM projects WHERE id = ?',
-          args: [id]
-        });
+        const res = await fetch(`/api/admin/projects?id=${id}`, { method: 'DELETE' });
+        if (!res.ok) throw new Error('Failed to delete');
         fetchProjects();
       } catch (err) {
         console.error('Error deleting project:', err);

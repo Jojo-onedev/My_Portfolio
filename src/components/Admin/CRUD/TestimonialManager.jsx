@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import turso from '../../../lib/turso';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PlusIcon, PencilIcon, TrashIcon } from '@heroicons/react/outline';
 
@@ -19,8 +18,10 @@ const TestimonialManager = () => {
   const fetchTestimonials = async () => {
     setLoading(true);
     try {
-      const res = await turso.execute('SELECT * FROM testimonials ORDER BY created_at DESC');
-      if (isMounted.current) setTestimonials(res.rows);
+      const res = await fetch('/api/admin/testimonials');
+      if (!res.ok) throw new Error('Failed to fetch');
+      const data = await res.json();
+      if (isMounted.current) setTestimonials(data.testimonials || []);
     } catch (err) {
       console.error('Error fetching testimonials:', err);
     } finally {
@@ -38,15 +39,19 @@ const TestimonialManager = () => {
     e.preventDefault();
     try {
       if (editingTestimonial) {
-        await turso.execute({
-          sql: 'UPDATE testimonials SET name = ?, role = ?, quote = ?, avatar = ? WHERE id = ?',
-          args: [formData.name, formData.role, formData.quote, formData.avatar, editingTestimonial.id]
+        const res = await fetch(`/api/admin/testimonials?id=${editingTestimonial.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
         });
+        if (!res.ok) throw new Error('Failed to update');
       } else {
-        await turso.execute({
-          sql: 'INSERT INTO testimonials (name, role, quote, avatar) VALUES (?, ?, ?, ?)',
-          args: [formData.name, formData.role, formData.quote, formData.avatar]
+        const res = await fetch('/api/admin/testimonials', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
         });
+        if (!res.ok) throw new Error('Failed to create');
       }
       setIsModalOpen(false);
       setEditingTestimonial(null);
@@ -60,7 +65,8 @@ const TestimonialManager = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Supprimer ce témoignage ?')) {
       try {
-        await turso.execute({ sql: 'DELETE FROM testimonials WHERE id = ?', args: [id] });
+        const res = await fetch(`/api/admin/testimonials?id=${id}`, { method: 'DELETE' });
+        if (!res.ok) throw new Error('Failed to delete');
         fetchTestimonials();
       } catch (err) { console.error(err); }
     }

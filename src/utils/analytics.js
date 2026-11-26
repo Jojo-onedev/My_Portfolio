@@ -1,5 +1,3 @@
-import turso from '../lib/turso';
-
 export const logVisit = async (path) => {
   try {
     const visitorId = localStorage.getItem('visitor_id') || Math.random().toString(36).substring(2, 15);
@@ -18,9 +16,17 @@ export const logVisit = async (path) => {
     } catch { /* geolocation silencieuse */ }
 
     try {
-      await turso.execute({
-        sql: 'INSERT INTO analytics (page_path, visitor_id, user_agent, referrer, country, city) VALUES (?, ?, ?, ?, ?, ?)',
-        args: [path, visitorId, navigator.userAgent, document.referrer, geo.country, geo.city]
+      await fetch('/api/analytics/visit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          path,
+          visitorId,
+          userAgent: navigator.userAgent,
+          referrer: document.referrer,
+          country: geo.country,
+          city: geo.city
+        })
       });
     } catch { /* analytics silencieuse */ }
   } catch { /* noop */ }

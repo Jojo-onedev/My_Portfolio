@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import turso from '../../../lib/turso';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PlusIcon, PencilIcon, TrashIcon } from '@heroicons/react/outline';
 
@@ -10,7 +9,7 @@ const SkillManager = () => {
   const [editingSkill, setEditingSkill] = useState(null);
   const [formData, setFormData] = useState({
     name: '',
-    level: 'IntermÃ©diaire',
+    level: 'Intermédiaire',
     category: 'tech',
     color: 'text-primary',
     bg: 'bg-primary/5',
@@ -21,8 +20,10 @@ const SkillManager = () => {
   const fetchSkills = async () => {
     setLoading(true);
     try {
-      const res = await turso.execute('SELECT * FROM skills ORDER BY created_at DESC');
-      if (isMounted.current) setSkills(res.rows);
+      const res = await fetch('/api/admin/skills');
+      if (!res.ok) throw new Error('Failed to fetch');
+      const data = await res.json();
+      if (isMounted.current) setSkills(data.skills || []);
     } catch (err) {
       console.error('Error fetching skills:', err);
     } finally {
@@ -40,15 +41,19 @@ const SkillManager = () => {
     e.preventDefault();
     try {
       if (editingSkill) {
-        await turso.execute({
-          sql: 'UPDATE skills SET name = ?, level = ?, category = ?, color = ?, bg = ?, border = ? WHERE id = ?',
-          args: [formData.name, formData.level, formData.category, formData.color, formData.bg, formData.border, editingSkill.id]
+        const res = await fetch(`/api/admin/skills?id=${editingSkill.id}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
         });
+        if (!res.ok) throw new Error('Failed to update');
       } else {
-        await turso.execute({
-          sql: 'INSERT INTO skills (name, level, category, color, bg, border) VALUES (?, ?, ?, ?, ?, ?)',
-          args: [formData.name, formData.level, formData.category, formData.color, formData.bg, formData.border]
+        const res = await fetch('/api/admin/skills', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
         });
+        if (!res.ok) throw new Error('Failed to create');
       }
       setIsModalOpen(false);
       setEditingSkill(null);
@@ -62,7 +67,8 @@ const SkillManager = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Supprimer cette compétence ?')) {
       try {
-        await turso.execute({ sql: 'DELETE FROM skills WHERE id = ?', args: [id] });
+        const res = await fetch(`/api/admin/skills?id=${id}`, { method: 'DELETE' });
+        if (!res.ok) throw new Error('Failed to delete');
         fetchSkills();
       } catch (err) { console.error(err); }
     }

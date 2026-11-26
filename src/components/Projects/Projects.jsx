@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import turso from '../../lib/turso';
 import { useTranslation } from 'react-i18next';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -22,10 +21,12 @@ const Projects = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const res = await turso.execute('SELECT * FROM projects ORDER BY created_at DESC');
-        setProjects(res.rows);
+        const res = await fetch('/api/projects');
+        if (!res.ok) throw new Error('Failed to fetch');
+        const data = await res.json();
+        setProjects(data.projects || []);
       } catch (err) {
-        console.error("Error loading projects from Turso:", err);
+        console.error("Error loading projects:", err);
       }
     };
     fetchProjects();

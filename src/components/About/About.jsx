@@ -3,7 +3,6 @@ import { faArrowRight, faRocket, faBuilding, faUserTie, faShoppingCart } from '@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import turso from '../../lib/turso';
 import { useTranslation } from 'react-i18next';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -19,12 +18,10 @@ const About = () => {
   useEffect(() => {
     const fetchSettings = async () => {
       try {
-        const res = await turso.execute('SELECT * FROM settings');
-        const settingsMap = {};
-        res.rows.forEach(row => {
-          settingsMap[row.key] = row.value;
-        });
-        setSettings(settingsMap);
+        const res = await fetch('/api/about');
+        if (!res.ok) throw new Error('Failed to fetch');
+        const data = await res.json();
+        setSettings(data.settings || {});
       } catch (err) {
         console.error("About settings fetch error:", err);
       }

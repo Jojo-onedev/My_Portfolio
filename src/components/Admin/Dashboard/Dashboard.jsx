@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import turso from '../../../lib/turso';
 import { 
   AreaChart, 
   Area, 
@@ -31,83 +30,16 @@ const Dashboard = () => {
 
   const fetchStats = async () => {
     try {
-      // 1. Total Visits & Unique Visitors
-      const resTotal = await turso.execute('SELECT COUNT(*) as total, COUNT(DISTINCT visitor_id) as unique_v FROM analytics');
-      const totalVisits = resTotal.rows[0]?.total || 0;
-      const uniqueVisitors = resTotal.rows[0]?.unique_v || 0;
-
-      // 2. Weekly Visits Chart
-      const resWeekly = await turso.execute(`
-        SELECT 
-          strftime('%w', timestamp) as day_index,
-          COUNT(*) as visits
-        FROM analytics 
-        WHERE timestamp >= date('now', '-7 days')
-        GROUP BY day_index
-        ORDER BY timestamp ASC
-      `);
-      
-      const dayNames = ['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'];
-      const chartData = resWeekly.rows.map(row => ({
-        name: dayNames[parseInt(row.day_index)],
-        visits: row.visits
-      }));
-
-      // 3. Top Pages & Geolocation
-      const resPages = await turso.execute(`
-        SELECT page_path as name, COUNT(*) as value 
-        FROM analytics 
-        GROUP BY page_path 
-        ORDER BY value DESC 
-        LIMIT 4
-      `);
-
-      const resGeo = await turso.execute(`
-        SELECT country as name, COUNT(*) as value
-        FROM analytics
-        WHERE country IS NOT NULL AND country != 'Local'
-        GROUP BY country
-        ORDER BY value DESC
-        LIMIT 5
-      `);
-
-      const resReferrers = await turso.execute(`
-        SELECT referrer as name, COUNT(*) as value
-        FROM analytics
-        WHERE referrer IS NOT NULL AND referrer != ''
-        GROUP BY referrer
-        ORDER BY value DESC
-        LIMIT 5
-      `);
-
-      const resProjects = await turso.execute('SELECT COUNT(*) as total FROM projects');
+      const res = await fetch('/api/analytics/stats');
+      if (!res.ok) throw new Error('Failed to fetch stats');
+      const data = await res.json();
 
       if (isMounted.current) {
-        setStats([
-          { label: 'Visites Totales', value: totalVisits.toLocaleString(), change: '+100%', color: 'text-blue-500' },
-          { label: 'Visiteurs Uniques', value: uniqueVisitors.toLocaleString(), change: '+100%', color: 'text-green-500' },
-          { label: 'Projets Actifs', value: resProjects.rows[0].total.toString(), change: 'Live', color: 'text-primary' },
-          { label: 'Uptime', value: '99.9%', change: 'Stable', color: 'text-purple-500' },
-        ]);
-        
-        setVisitData(chartData.length > 0 ? chartData : [
-          { name: 'Lun', visits: 0 }, { name: 'Mar', visits: 0 }, { name: 'Mer', visits: 0 }, 
-          { name: 'Jeu', visits: 0 }, { name: 'Ven', visits: 0 }, { name: 'Sam', visits: 0 }, { name: 'Dim', visits: 0 }
-        ]);
-        
-        setPageViews(resPages.rows.map(row => ({
-          name: row.name === '/' ? 'Accueil' : row.name.replace('/', ''),
-          value: row.value
-        })));
-
-        setTopCountries(resGeo.rows);
-        setReferrers(resReferrers.rows.map(r => {
-          let domain = r.name;
-          try {
-            domain = new URL(r.name).hostname.replace('www.', '');
-          } catch { /* ignore */ }
-          return { name: domain, value: r.value };
-        }));
+        setStats(data.stats);
+        setVisitData(data.visitData);
+        setPageViews(data.pageViews);
+        setTopCountries(data.topCountries);
+        setReferrers(data.referrers);
       }
 
     } catch (err) {

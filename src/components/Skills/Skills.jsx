@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import turso from '../../lib/turso';
 import { motion } from 'framer-motion';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faMoneyBill, faRecycle, faPhone, faSearch, faPalette, faBolt, faRocket } from '@fortawesome/free-solid-svg-icons';
@@ -18,8 +17,10 @@ const Skills = () => {
 
   const fetchSkills = async () => {
     try {
-      const res = await turso.execute('SELECT * FROM skills ORDER BY id ASC');
-      if (isMounted.current) setSkills(res.rows);
+      const res = await fetch('/api/skills');
+      if (!res.ok) throw new Error('Failed to fetch');
+      const data = await res.json();
+      if (isMounted.current) setSkills(data.skills || []);
     } catch (err) {
       console.error('Error fetching skills:', err);
     } finally {
