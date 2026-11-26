@@ -12,17 +12,20 @@ const News = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [page, setPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
+  const [initialLoad, setInitialLoad] = useState(true);
 
   const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-const fetchNews = useCallback(async (newPage = 1) => {
-    if (loading && newPage === 1) return; // Prevent multiple initial loads
+  const fetchNews = useCallback(async (newPage = 1, isRetry = false) => {
+    if (loading && newPage === 1 && !isRetry) return;
     setLoading(true);
-    setError(null);
+    if (isRetry || newPage === 1) setError(null);
     try {
       const tags = ['javascript', 'react', 'webdev'];
       const filteredTags = selectedCategory === 'all' ? tags : [selectedCategory];
       const results = [];
+      let anySuccess = false;
+      
       for (const tag of filteredTags) {
         try {
           const response = await fetch(`https://dev.to/api/articles?tag=${tag}&per_page=3&page=${newPage}`);
@@ -31,28 +34,42 @@ const fetchNews = useCallback(async (newPage = 1) => {
             throw new Error(`Erreur HTTP: ${response.status}`);
           }
           const data = await response.json();
+          if (data.length > 0) anySuccess = true;
           results.push(...data);
           await delay(300);
-        } catch { continue; }
+        } catch {
+          continue;
+        }
       }
+      
+      if (!anySuccess && results.length === 0) {
+        throw new Error('Aucun article récupéré');
+      }
+      
       const newArticles = results.map((article, index) => ({
         ...article,
         uniqueId: `${article.id}_${index}_${newPage}`
       }));
+      
       if (newPage === 1) setNews(newArticles);
       else setNews(prev => [...prev, ...newArticles]);
       setHasMore(newArticles.length > 0);
     } catch {
-      setError(t('news_error_loading') || 'Erreur lors du chargement des actualitÃ©s');
+      setError(t('news_error_loading') || 'Erreur lors du chargement des actualités');
     } finally {
       setLoading(false);
+      setInitialLoad(false);
     }
   }, [selectedCategory, loading, t]);
 
   const handleRefresh = useCallback(() => {
     setPage(1);
-    fetchNews(1);
+    fetchNews(1, true);
   }, [fetchNews]);
+
+  const handleRetry = useCallback(() => {
+    fetchNews(page, true);
+  }, [fetchNews, page]);
 
   const handleShare = useCallback((url) => {
     if (navigator.share) {
@@ -68,14 +85,23 @@ const fetchNews = useCallback(async (newPage = 1) => {
     }
   }, [t]);
 
+  const handleCategoryChange = useCallback((cat) => {
+    setSelectedCategory(cat);
+    setPage(1);
+    setHasMore(true);
+  }, []);
+
   useEffect(() => {
-    let active = true;
-    if (active) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      fetchNews(1);
-    }
-    return () => { active = false; };
-  }, [selectedCategory, fetchNews]);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchNews(1);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchNews(1);
+  }, [selectedCategory]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const isEmpty = !loading && !error && news.length === 0;
 
   return (
     <section className="py-32 min-h-screen bg-white dark:bg-[#121212] transition-colors duration-500 overflow-hidden">
@@ -105,7 +131,7 @@ const fetchNews = useCallback(async (newPage = 1) => {
               {['all', 'javascript', 'typescript', 'python', 'figma', 'react', 'webdev'].map((cat) => (
                 <button
                   key={cat}
-                  onClick={() => setSelectedCategory(cat)}
+                  onClick={() => handleCategoryChange(cat)}
                   className={`px-6 py-2 rounded-2xl text-sm font-bold uppercase tracking-wider transition-all shadow-lg ${
                     selectedCategory === cat 
                       ? 'bg-primary text-white shadow-primary/20' 
@@ -127,9 +153,45 @@ const fetchNews = useCallback(async (newPage = 1) => {
             </button>
           </div>
 
+          {/* Error State with Retry */}
           {error && (
-            <div className="mb-12 p-4 bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-500 rounded-2xl text-center font-bold">
-              {error}
+            <div className="mb-12 p-6 bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-500 rounded-2xl">
+              <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div className="flex items-center space-x-3">
+                  <svg className="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                  </svg>
+                  <span className="font-bold">{error}</span>
+                </div>
+                <button
+                  onClick={handleRetry}
+                  disabled={loading}
+                  className="px-4 py-2 bg-red-500/20 text-red-500 dark:text-red-400 rounded-xl font-bold uppercase tracking-widest text-xs hover:bg-red-500/30 transition-all flex items-center space-x-2 disabled:opacity-50"
+                >
+                  <RefreshIcon className="h-4 w-4" />
+                  <span>{t('retry') || 'Réessayer'}</span>
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Empty State */}
+          {isEmpty && !initialLoad && (
+            <div className="mb-12 p-12 bg-gray-50 dark:bg-[#1a1a1a] border border-gray-100 dark:border-white/5 rounded-2xl text-center">
+              <svg className="w-16 h-16 mx-auto mb-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v12a2 2 0 01-2 2zM9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v12a2 2 0 01-2 2z" />
+              </svg>
+              <p className="text-gray-500 dark:text-gray-400 font-light mb-4">
+                {selectedCategory === 'all' 
+                  ? t('news_empty_all') || 'Aucun article trouvé pour le moment.'
+                  : t('news_empty_category') || `Aucun article pour la catégorie "${selectedCategory}".`}
+              </p>
+              <button
+                onClick={handleRefresh}
+                className="px-6 py-3 bg-primary text-white rounded-xl font-bold uppercase tracking-widest text-xs shadow-lg shadow-primary/20 hover:scale-105 transition-all"
+              >
+                {t('refresh') || 'Actualiser'}
+              </button>
             </div>
           )}
 
@@ -200,7 +262,8 @@ const fetchNews = useCallback(async (newPage = 1) => {
             ))}
           </div>
 
-          {hasMore && !loading && (
+          {/* Loading More */}
+          {hasMore && !loading && !error && news.length > 0 && (
             <div className="text-center mt-20">
               <button
                 onClick={() => {
@@ -213,10 +276,23 @@ const fetchNews = useCallback(async (newPage = 1) => {
               </button>
             </div>
           )}
+
+          {/* Loading indicator for load more */}
+          {hasMore && loading && news.length > 0 && (
+            <div className="text-center mt-12">
+              <div className="inline-flex items-center space-x-3 text-gray-500 dark:text-gray-400">
+                <svg className="animate-spin h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                </svg>
+                <span className="font-bold uppercase tracking-widest text-xs">{t('loading_more') || 'Chargement...'}</span>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </section>
   );
 };
 
-export default News;
+export default News;

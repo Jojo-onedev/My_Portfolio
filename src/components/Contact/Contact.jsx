@@ -20,11 +20,24 @@ const Contact = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+  const [configMissing, setConfigMissing] = useState(false);
   const { t } = useTranslation();
+
+  // Check EmailJS config on mount
+  useEffect(() => {
+    const serviceId = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+    
+    if (!serviceId || !templateId || !publicKey) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setConfigMissing(true);
+      console.warn('EmailJS configuration missing. Required vars: VITE_EMAILJS_SERVICE_ID, VITE_EMAILJS_TEMPLATE_ID, VITE_EMAILJS_PUBLIC_KEY');
+    }
+  }, []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Info section animation
       gsap.from(".contact-info > *", {
         scrollTrigger: {
           trigger: ".contact-info",
@@ -37,7 +50,6 @@ const Contact = () => {
         ease: "power3.out"
       });
 
-      // Form animation
       gsap.from(".contact-form", {
         scrollTrigger: {
           trigger: ".contact-form",
@@ -63,6 +75,12 @@ const Contact = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (configMissing) {
+      setError(t('contact.configMissing') || 'Service d\'email non configuré. Utilisez les liens directs ci-contre.');
+      return;
+    }
+    
     setLoading(true);
     setError('');
     setSuccess(false);
@@ -83,8 +101,8 @@ const Contact = () => {
       setSuccess(true);
       setFormData({ name: '', email: '', subject: '', message: '' });
     } catch (err) {
-      setError(err.message || 'Error');
-      console.error('Erreur:', err);
+      setError(err.message || t('contact.sendError') || 'Erreur lors de l\'envoi. Veuillez utiliser les contacts directs.');
+      console.error('Erreur EmailJS:', err);
     } finally {
       setLoading(false);
     }
@@ -113,6 +131,20 @@ const Contact = () => {
               <p className="text-xl text-gray-500 dark:text-gray-400 font-light leading-relaxed mb-12 max-w-lg">
                 {t('contact.description')}
               </p>
+
+              {/* Config Missing Warning */}
+              {configMissing && (
+                <div className="mb-8 p-4 bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-500 rounded-2xl">
+                  <div className="flex items-center space-x-3">
+                    <svg className="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    <span className="font-bold text-sm">
+                      {t('contact.configMissingWarning') || 'Service de formulaire non configuré. Veuillez utiliser les contacts directs ci-dessous.'}
+                    </span>
+                  </div>
+                </div>
+              )}
 
               <div className="space-y-8">
                 <div className="flex items-center space-x-6 group">
@@ -154,7 +186,7 @@ const Contact = () => {
 
                 {error && (
                   <div className="mb-8 p-4 bg-red-500/10 border border-red-500/20 text-red-600 dark:text-red-500 rounded-2xl text-center font-bold">
-                    {t('contact.errorMsg')}
+                    {error}
                   </div>
                 )}
 
@@ -208,7 +240,7 @@ const Contact = () => {
 
                   <button
                     type="submit"
-                    disabled={loading}
+                    disabled={loading || configMissing}
                     className="w-full h-16 rounded-2xl bg-primary text-white font-black text-lg hover:scale-[1.02] active:scale-[0.98] lg:hover:shadow-xl lg:hover:shadow-primary/20 transition-all flex items-center justify-center disabled:opacity-50"
                   >
                     {loading ? (
@@ -229,4 +261,3 @@ const Contact = () => {
 };
 
 export default Contact;
-

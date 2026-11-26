@@ -61,10 +61,10 @@ Le portfolio a une identité visuelle cohérente, une navigation claire, un affi
 - [x] **Supprimer ou justifier les métriques fictives des cartes projets.** Les taux de conversion aléatoires et les indicateurs fixes ont été retirés des cartes projets lors de la refonte.  
   Référence : [Projects.jsx](./src/components/Projects/Projects.jsx).
 
-- [ ] **Fiabiliser la page Actualités.** Les échecs de requêtes par tag sont consignés en console puis ignorés, ce qui peut afficher une page vide sans explication. Afficher un état d'erreur/retry clair, éviter les chargements inutiles et vérifier le comportement de pagination et de changement de catégorie.  
+- [x] **Fiabiliser la page Actualités.** Les échecs de requêtes par tag sont consignés en console puis ignorés, ce qui peut afficher une page vide sans explication. Afficher un état d'erreur/retry clair, éviter les chargements inutiles et vérifier le comportement de pagination et de changement de catégorie.  
   Référence : [News.jsx](./src/components/News/News.jsx).
 
-- [ ] **Rendre l'échec EmailJS explicite si la configuration manque.** Vérifier les variables nécessaires au démarrage et présenter une solution de contact alternative si elles sont absentes ou si le service échoue.  
+- [x] **Rendre l'échec EmailJS explicite si la configuration manque.** Vérifier les variables nécessaires au démarrage et présenter une solution de contact alternative si elles sont absentes ou si le service échoue.  
   Référence : [Contact.jsx](./src/components/Contact/Contact.jsx).
 
 ## P2 — Vie privée, SEO, accessibilité et contenu
@@ -124,3 +124,5 @@ Le portfolio a une identité visuelle cohérente, une navigation claire, un affi
 | 2026-11-26 | GA unifié | Variable VITE_GA_MEASUREMENT_ID utilisée ; ID hardcodé retiré d'index.html. |
 | 2026-11-26 | Métriques fictives | Taux de conversion aléatoires supprimés des cartes projets (Math.random remplacé par useState). |
 | 2026-11-26 | Turso token retiré du bundle | Toutes les opérations Turso (analytics, Dashboard, Projects, Skills, Testimonials, About, Hero, Admin CRUD) déplacées vers API routes Vercel (/api/...). Chunk turso.js (88 kB) éliminé du bundle client. |
+| 2026-11-26 | Page Actualités fiabilisée | États erreur/retry, état vide, pagination, reset page sur changement catégorie, loading indicator. |
+| 2026-11-26 | EmailJS échec explicite | Vérification config au mount, warning si vars manquantes, fallback contacts directs (email, WhatsApp), désactivation formulaire si config absente. |
